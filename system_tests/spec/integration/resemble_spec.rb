@@ -15,7 +15,7 @@
 
 require 'faraday'
 
-describe 'The GoPretend Server' do
+describe 'The resemble Server' do
 
 
 	def start_process(cmd)
@@ -64,17 +64,17 @@ describe 'The GoPretend Server' do
 	context 'when run without a config file' do
 
 		it 'starts anyway' do
-			results = spawn_process('gopretend')
+			results = spawn_process('resemble')
 			# a -1 exit status indicates it had to be killed
 			expect(results[:exitstatus]).to be -1
-			expect(results[:output]).to include('Starting GoPretend Service')
+			expect(results[:output]).to include('Starting resemble Service')
 		end
 
 		context 'when its left running' do
 			attr_reader :process_details
 
 			before(:all) do
-				@process_details = start_process('gopretend')
+				@process_details = start_process('resemble')
 			end
 
 			after(:all) do
@@ -82,7 +82,7 @@ describe 'The GoPretend Server' do
 			end
 
 			it 'raises an API endpoint' do
-				response = client.get('/gopretend')
+				response = client.get('/resemble')
 				expect(response.status).to be 200
 			end
 		end
@@ -90,7 +90,7 @@ describe 'The GoPretend Server' do
 
 	context 'when run with a missing config file' do
 		it 'errors out with a non-zero error code' do
-			results = spawn_process('gopretend /path/to/file/that/doesnt/exist.yml')
+			results = spawn_process('resemble /path/to/file/that/doesnt/exist.yml')
 			expect($?).to_not be 0
 			expect(results[:output]).to include('cannot be found')
 		end
@@ -99,7 +99,7 @@ describe 'The GoPretend Server' do
 	context 'when running the minimal configuration' do
 		attr_reader :process_details
 		before(:all) do
-			@process_details = start_process('gopretend spec/integration/fixtures/min_rest_gopretend.yml')
+			@process_details = start_process('resemble spec/integration/fixtures/min_rest_resemble.yml')
 		end
 
 		after(:all) do
@@ -107,7 +107,7 @@ describe 'The GoPretend Server' do
 		end
 
 		it 'raises an API endpoint' do
-			response = client.get('/gopretend')
+			response = client.get('/resemble')
 			expect(response.status).to be 200
 		end
 	end
