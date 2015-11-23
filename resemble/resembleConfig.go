@@ -13,15 +13,27 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package main_test
+package main
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	"testing"
+	"errors"
+	. "github.com/dhrapson/resemble/configure"
+	"gopkg.in/yaml.v2"
 )
 
-func TestResemble(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Resemble Suite")
+type ResembleConfig struct {
+	typeName string `yaml: "type"`
+	matchers []HttpMatcher
+}
+
+func (c *ResembleConfig) Parse(data []byte) error {
+
+	if err := yaml.Unmarshal(data, c); err != nil {
+		return err
+	}
+	if c.typeName == "" {
+		return errors.New("Resemble config: invalid `type`")
+	}
+
+	return nil
 }
