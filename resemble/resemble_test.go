@@ -101,12 +101,12 @@ var _ = Describe("Resemble", func() {
 			Context("and a file is found in the provided location", func() {
 
 				BeforeEach(func() {
-					cmdLineArgs = []string{"fixtures/http_resemble.yml"}
+					cmdLineArgs = []string{"fixtures/rest_resemble.yml"}
 				})
 
 				It("should read the file contents", func() {
 					Expect(err).NotTo(HaveOccurred())
-					matched, matching_err := regexp.MatchString("HTTP", configString)
+					matched, matching_err := regexp.MatchString("REST_HTTP", configString)
 					Expect(matching_err).NotTo(HaveOccurred())
 					Expect(matched).To(BeTrue())
 				})

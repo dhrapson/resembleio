@@ -13,17 +13,17 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package main
+package configure
 
 import (
 	"errors"
-	. "github.com/dhrapson/resemble/configure"
+	"fmt"
 	"gopkg.in/yaml.v2"
 )
 
 type ResembleConfig struct {
-	typeName string `yaml: "type"`
-	matchers []HttpMatcher
+	TypeName string `yaml:"type"`
+	Matchers []HttpMatcher
 }
 
 func (c *ResembleConfig) Parse(data []byte) error {
@@ -31,7 +31,7 @@ func (c *ResembleConfig) Parse(data []byte) error {
 	if err := yaml.Unmarshal(data, c); err != nil {
 		return err
 	}
-	if c.typeName == "" {
+	if c.TypeName == "" {
 		return errors.New("Resemble config: invalid `type`")
 	}
 

@@ -13,10 +13,10 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package main_test
+package configure_test
 
 import (
-	. "github.com/dhrapson/resemble/resemble"
+	. "github.com/dhrapson/resemble/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	// "gopkg.in/yaml.v2"
@@ -38,11 +38,14 @@ var _ = Describe("ResembleConfig", func() {
 	})
 
 	Describe("reading an invalid config yaml", func() {
+
 		Context("when it contains garbage", func() {
+
 			BeforeEach(func() {
 				filename = "fixtures/invalid_config.yml"
 			})
-			It("should return raise an error", func() {
+
+			It("should raise an error", func() {
 				err = config.Parse(configData)
 				Expect(err).To(HaveOccurred())
 			})
@@ -54,11 +57,26 @@ var _ = Describe("ResembleConfig", func() {
 				filename = "fixtures/missing_type_config.yml"
 			})
 
-			It("should return raise an error", func() {
+			It("should raise an error", func() {
 				err = config.Parse(configData)
 				Expect(err).To(HaveOccurred())
 			})
 		})
+	})
 
+	Describe("reading a valid config yaml", func() {
+
+		Context("when it contains a HTTP type", func() {
+
+			BeforeEach(func() {
+				filename = "fixtures/http_resemble.yml"
+			})
+
+			It("should return a configuration", func() {
+				err = config.Parse(configData)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(config.TypeName).To(Equal("HTTP"))
+			})
+		})
 	})
 })

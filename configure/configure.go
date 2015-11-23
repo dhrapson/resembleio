@@ -23,8 +23,10 @@ func ConfigureService(configYaml string) ServiceType {
 	var s ServiceType
 	if len(configYaml) == 0 {
 		s = newApiOnlyServiceType()
-	} else if strings.Contains(configYaml, "REST") {
+	} else if strings.Contains(configYaml, "type: REST_HTTP") {
 		s = newRestServiceType()
+	} else if strings.Contains(configYaml, "type: HTTP") {
+		s = newHttpServiceType()
 	} else {
 		s = newHttpServiceType()
 	}
