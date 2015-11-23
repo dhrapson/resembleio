@@ -38,16 +38,16 @@ func (s RestServiceType) Serve() {
 
 func (s RestServiceType) Configure() {
 	createApiEndpoint()
-	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/", restEndpoint)
 }
 
-func hello(res http.ResponseWriter, req *http.Request) {
+func restEndpoint(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set(
 		"Content-Type",
 		"text/html",
 	)
 	io.WriteString(
 		res,
-		"Hello world",
+		"REST over HTTP endpoint",
 	)
 }

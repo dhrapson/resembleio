@@ -16,17 +16,38 @@
 package configure
 
 import (
-	"strings"
+	"io"
+	"net/http"
 )
 
-func ConfigureService(configYaml string) ServiceType {
-	var s ServiceType
-	if len(configYaml) == 0 {
-		s = newApiOnlyServiceType()
-	} else if strings.Contains(configYaml, "REST") {
-		s = newRestServiceType()
-	} else {
-		s = newHttpServiceType()
-	}
-	return s
+type HttpServiceType struct {
+	name string
+}
+
+func newHttpServiceType() HttpServiceType {
+	return HttpServiceType{name: "HTTP"}
+}
+
+func (s HttpServiceType) Name() string {
+	return s.name
+}
+
+func (s HttpServiceType) Serve() {
+	listenForHttp()
+}
+
+func (s HttpServiceType) Configure() {
+	createApiEndpoint()
+	http.HandleFunc("/", httpEndpoint)
+}
+
+func httpEndpoint(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set(
+		"Content-Type",
+		"text/html",
+	)
+	io.WriteString(
+		res,
+		"HTTP endpoint",
+	)
 }

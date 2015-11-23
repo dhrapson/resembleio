@@ -53,4 +53,15 @@ type: REST_HTTP`
 			Expect(serviceType.Name()).To(Equal("REST over HTTP"))
 		})
 	})
+
+	Context("when a HTTP config yaml is provided", func() {
+		BeforeEach(func() {
+			yaml = `---
+type: HTTP`
+		})
+
+		It("should return an HttpServiceType", func() {
+			Expect(serviceType.Name()).To(Equal("HTTP"))
+		})
+	})
 })

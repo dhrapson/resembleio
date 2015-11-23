@@ -67,7 +67,7 @@ var _ = Describe("Resemble", func() {
 				})
 			})
 
-			Context("and a valid config yaml is found in the default location", func() {
+			Context("and a valid REST config yaml is found in the default location", func() {
 				BeforeEach(func() {
 					copyFile("fixtures/rest_resemble.yml", "resemble.yml")
 				})
@@ -106,7 +106,7 @@ var _ = Describe("Resemble", func() {
 
 				It("should read the file contents", func() {
 					Expect(err).NotTo(HaveOccurred())
-					matched, matching_err := regexp.MatchString("REST_HTTP", configString)
+					matched, matching_err := regexp.MatchString("HTTP", configString)
 					Expect(matching_err).NotTo(HaveOccurred())
 					Expect(matched).To(BeTrue())
 				})
