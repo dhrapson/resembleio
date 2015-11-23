@@ -17,7 +17,7 @@ package configure
 
 import (
 	"errors"
-	"gopkg.in/yaml.v2"
+	"github.com/smallfish/simpleyaml"
 	"log"
 )
 
@@ -28,13 +28,52 @@ type ResembleConfig struct {
 
 func (c *ResembleConfig) Parse(data []byte) error {
 
-	if err := yaml.Unmarshal(data, c); err != nil {
-		log.Println(err)
+	yaml, err := simpleyaml.NewYaml(data)
+	if err != nil {
 		return errors.New("Error reading YAML text")
 	}
-	if c.TypeName == "" {
-		return errors.New("Resemble config: invalid `type`")
+	// Probably a defect in the simpleyaml library, the NewYaml function usage above isnt throwing an error
+	// when we get it to open a totally invalid yaml file. Dealing with that separately here....
+	if _, map_err := yaml.Map(); map_err != nil {
+		return errors.New("Error reading YAML text")
 	}
 
+	typeName, err := yaml.Get("type").String()
+	if err != nil {
+		return errors.New("Resemble config: invalid `type`")
+	}
+	c.TypeName = typeName
+
+	matchersYaml := yaml.Get("matchers")
+	if err == nil {
+		c.Matchers, err = getMatchers(matchersYaml)
+	}
 	return nil
+}
+
+func getMatchers(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher, err error) {
+
+	matchersType, err := matchersYaml.Array()
+	arraySize := len(matchersType)
+	matchers = make([]HttpMatcher, arraySize)
+	for i := 0; i < arraySize; i++ {
+		matcher := matchersYaml.GetIndex(i)
+		matcherType, err := matcher.Get("type").String()
+		if err != nil {
+			return matchers, errors.New("Resemble config: invalid `matcher->type`")
+		}
+		if matcherType == "url_path" {
+			path_regex, err := matcher.Get("path_regex").String()
+			if err != nil {
+				log.Fatalln("missing path_regex for url_path matcher")
+			}
+			matchers[i], err = NewUrlPathHttpMatcher(path_regex)
+			if err != nil {
+				log.Fatalln("invalid path_regex for url_path matcher", path_regex)
+			}
+		} else {
+			log.Fatalln("missing url_path for ")
+		}
+	}
+	return matchers, err
 }

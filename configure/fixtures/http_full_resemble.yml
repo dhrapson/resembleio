@@ -1,0 +1,5 @@
+---
+type: HTTP
+matchers:
+  - type: url_path
+    path_regex: /test

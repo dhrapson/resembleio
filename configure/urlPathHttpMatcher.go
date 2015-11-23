@@ -17,10 +17,25 @@ package configure
 
 import (
 	"net/http"
+	"regexp"
 )
 
-type UrlPathHttpMatcher struct{}
+type UrlPathHttpMatcher struct {
+	regex *regexp.Regexp
+}
+
+func NewUrlPathHttpMatcher(regularExpr string) (matcher UrlPathHttpMatcher, err error) {
+	compiledRegex, err := regexp.Compile(regularExpr)
+	if err == nil {
+		matcher.regex = compiledRegex
+	}
+	return matcher, err
+}
 
 func (m UrlPathHttpMatcher) Match(req *http.Request) bool {
-	return true
+	return m.MatchUrlPath(req.URL.Path)
+}
+
+func (m UrlPathHttpMatcher) MatchUrlPath(urlPath string) bool {
+	return m.regex.MatchString(urlPath)
 }
