@@ -21,11 +21,13 @@ import (
 )
 
 type HttpServiceType struct {
-	name string
+	name     string
+	matchers []HttpMatcher
 }
 
 func newHttpServiceType() HttpServiceType {
-	return HttpServiceType{name: "HTTP"}
+	m := []HttpMatcher{}
+	return HttpServiceType{name: "HTTP", matchers: m}
 }
 
 func (s HttpServiceType) Name() string {
@@ -38,16 +40,35 @@ func (s HttpServiceType) Serve() {
 
 func (s HttpServiceType) Configure() {
 	createApiEndpoint()
-	http.HandleFunc("/", httpEndpoint)
+	http.HandleFunc("/", HttpEndpoint(s.matchers))
 }
 
-func httpEndpoint(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set(
-		"Content-Type",
-		"text/html",
-	)
-	io.WriteString(
-		res,
-		"HTTP endpoint",
-	)
+func HttpEndpoint(matchers []HttpMatcher) http.HandlerFunc {
+
+	return func(res http.ResponseWriter, req *http.Request) {
+		if matchHttpRequest(matchers, req) {
+			res.Header().Set(
+				"Content-Type",
+				"text/html",
+			)
+			io.WriteString(
+				res,
+				"HTTP endpoint - matched",
+			)
+		} else {
+			http.NotFound(res, req)
+		}
+	}
+}
+
+func matchHttpRequest(matchers []HttpMatcher, req *http.Request) bool {
+	if len(matchers) == 0 {
+		return false
+	}
+	for i := 0; i < len(matchers); i++ {
+		if matchers[i].Match(req) {
+			return true
+		}
+	}
+	return false
 }
