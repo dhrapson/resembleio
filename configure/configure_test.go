@@ -16,7 +16,7 @@
 package configure_test
 
 import (
-	. "github.com/dhrapson/gopretend/configure"
+	. "github.com/dhrapson/resemble/configure"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

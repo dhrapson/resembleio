@@ -45,7 +45,7 @@ func listenForHttp() {
 }
 
 func createApiEndpoint() {
-	http.HandleFunc("/gopretend", api)
+	http.HandleFunc("/resemble", api)
 }
 
 func api(res http.ResponseWriter, req *http.Request) {

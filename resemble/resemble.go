@@ -18,13 +18,13 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/dhrapson/gopretend/configure"
+	"github.com/dhrapson/resemble/configure"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 )
 
-var defaultYamlFileName = "gopretend.yml"
+var defaultYamlFileName = "resemble.yml"
 
 func main() {
 	argsWithoutProg := os.Args[1:]
@@ -32,13 +32,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Starting GoPretend...")
+	fmt.Println("Starting Resemble...")
 	serviceType := configure.ConfigureService(configYaml)
-	fmt.Println("Configuring GoPretend as", serviceType.Name(), "...")
+	fmt.Println("Configuring Resemble as", serviceType.Name(), "...")
 	serviceType.Configure()
-	fmt.Println("Starting GoPretend Service...")
+	fmt.Println("Starting Resemble Service...")
 	serviceType.Serve()
-	fmt.Println("Stopping GoPretend Service...")
+	fmt.Println("Stopping Resemble Service...")
 }
 
 func GetConfigData(cmdLineArgs []string) (configYaml string, err error) {

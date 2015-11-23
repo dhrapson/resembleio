@@ -16,7 +16,7 @@
 package main_test
 
 import (
-	. "github.com/dhrapson/gopretend/gopretend"
+	. "github.com/dhrapson/resemble/resemble"
 	"os/exec"
 	"regexp"
 
@@ -40,7 +40,7 @@ func deleteFile(filePath string) {
 	}
 }
 
-var _ = Describe("Gopretend", func() {
+var _ = Describe("Resemble", func() {
 
 	Describe("loading config data from file", func() {
 
@@ -69,11 +69,11 @@ var _ = Describe("Gopretend", func() {
 
 			Context("and a valid config yaml is found in the default location", func() {
 				BeforeEach(func() {
-					copyFile("fixtures/basic_gopretend.yml", "gopretend.yml")
+					copyFile("fixtures/rest_resemble.yml", "resemble.yml")
 				})
 
 				AfterEach(func() {
-					deleteFile("gopretend.yml")
+					deleteFile("resemble.yml")
 				})
 
 				It("should read the file contents", func() {
@@ -87,7 +87,7 @@ var _ = Describe("Gopretend", func() {
 
 		Context("when a config yaml path is provided", func() {
 
-			Context("and no config yaml is found in the provided location", func() {
+			Context("and no file is found in the provided location", func() {
 
 				BeforeEach(func() {
 					cmdLineArgs = []string{"wont_ever_exist.yml"}
@@ -98,10 +98,10 @@ var _ = Describe("Gopretend", func() {
 				})
 			})
 
-			Context("and no config yaml is found in the provided location", func() {
+			Context("and a file is found in the provided location", func() {
 
 				BeforeEach(func() {
-					cmdLineArgs = []string{"fixtures/basic_gopretend.yml"}
+					cmdLineArgs = []string{"fixtures/http_resemble.yml"}
 				})
 
 				It("should read the file contents", func() {

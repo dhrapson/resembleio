@@ -22,7 +22,7 @@ import (
 	"testing"
 )
 
-func TestGopretend(t *testing.T) {
+func TestResemble(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Gopretend Suite")
+	RunSpecs(t, "Resemble Suite")
 }
