@@ -17,7 +17,6 @@ package configure_test
 
 import (
 	. "github.com/dhrapson/resemble/configure"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -27,10 +26,11 @@ var _ = Describe("Configure", func() {
 	var (
 		serviceType ServiceType
 		yaml        string
+		err         error
 	)
 
 	JustBeforeEach(func() {
-		serviceType = ConfigureService(yaml)
+		serviceType, err = ConfigureService(yaml)
 	})
 
 	Context("when no config yaml is provided", func() {

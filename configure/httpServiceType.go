@@ -25,7 +25,7 @@ type HttpServiceType struct {
 	matchers []HttpMatcher
 }
 
-func newHttpServiceType() HttpServiceType {
+func newHttpServiceType(config ResembleConfig) HttpServiceType {
 	m := []HttpMatcher{}
 	return HttpServiceType{name: "HTTP", matchers: m}
 }

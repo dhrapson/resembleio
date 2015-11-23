@@ -96,6 +96,14 @@ describe 'The resemble Server' do
 		end
 	end
 
+	context 'when run with a garbage config file' do
+		it 'errors out with a non-zero error code' do
+			results = spawn_process('resemble spec/integration/fixtures/invalid_config.yml')
+			expect($?).to_not be 0
+			expect(results[:output]).to include('Error reading YAML text')
+		end
+	end
+
 	context 'when running the minimal configuration' do
 		attr_reader :process_details
 		before(:all) do

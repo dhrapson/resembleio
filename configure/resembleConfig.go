@@ -17,8 +17,8 @@ package configure
 
 import (
 	"errors"
-	"fmt"
 	"gopkg.in/yaml.v2"
+	"log"
 )
 
 type ResembleConfig struct {
@@ -29,7 +29,8 @@ type ResembleConfig struct {
 func (c *ResembleConfig) Parse(data []byte) error {
 
 	if err := yaml.Unmarshal(data, c); err != nil {
-		return err
+		log.Println(err)
+		return errors.New("Error reading YAML text")
 	}
 	if c.TypeName == "" {
 		return errors.New("Resemble config: invalid `type`")

@@ -19,7 +19,6 @@ import (
 	. "github.com/dhrapson/resemble/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	// "gopkg.in/yaml.v2"
 	"io/ioutil"
 )
 

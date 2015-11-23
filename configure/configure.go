@@ -16,19 +16,25 @@
 package configure
 
 import (
-	"strings"
+	"errors"
+	// "strings"
 )
 
-func ConfigureService(configYaml string) ServiceType {
-	var s ServiceType
+func ConfigureService(configYaml string) (s ServiceType, err error) {
+	var resembleConfig ResembleConfig
 	if len(configYaml) == 0 {
-		s = newApiOnlyServiceType()
-	} else if strings.Contains(configYaml, "type: REST_HTTP") {
-		s = newRestServiceType()
-	} else if strings.Contains(configYaml, "type: HTTP") {
-		s = newHttpServiceType()
-	} else {
-		s = newHttpServiceType()
+		return newApiOnlyServiceType(), err
 	}
-	return s
+	err = resembleConfig.Parse([]byte(configYaml))
+	if err != nil {
+		return s, err
+	}
+	if resembleConfig.TypeName == "REST_HTTP" {
+		s = newRestServiceType()
+	} else if resembleConfig.TypeName == "HTTP" {
+		s = newHttpServiceType(resembleConfig)
+	} else {
+		err = errors.New("Invalid config: `type`" + resembleConfig.TypeName)
+	}
+	return s, err
 }

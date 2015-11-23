@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/dhrapson/resemble/configure"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -33,7 +34,10 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Starting Resemble...")
-	serviceType := configure.ConfigureService(configYaml)
+	serviceType, err := configure.ConfigureService(configYaml)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	fmt.Println("Configuring Resemble as", serviceType.Name(), "...")
 	serviceType.Configure()
 	fmt.Println("Starting Resemble Service...")
