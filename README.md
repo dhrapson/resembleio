@@ -1,4 +1,4 @@
-# Resemble
+# ResembleIO
 
 A declaritive Service Virtualization and Stubbing utility written in Golang
 
