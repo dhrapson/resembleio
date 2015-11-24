@@ -95,6 +95,8 @@ var _ = Describe("ResembleConfig", func() {
 				Expect(config.Matchers[0]).To(Equal(pathMatcher))
 				verbMatcher, _ := NewVerbHttpMatcher("GET|POST")
 				Expect(config.Matchers[1]).To(Equal(verbMatcher))
+				hostMatcher, _ := NewHostHttpMatcher("localhost")
+				Expect(config.Matchers[2]).To(Equal(hostMatcher))
 			})
 		})
 	})
