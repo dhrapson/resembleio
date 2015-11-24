@@ -18,7 +18,6 @@ package configure
 import (
 	"errors"
 	"github.com/smallfish/simpleyaml"
-	"log"
 )
 
 type ResembleConfig struct {
@@ -34,7 +33,7 @@ func (c *ResembleConfig) Parse(data []byte) error {
 	}
 	// Probably a defect in the simpleyaml library, the NewYaml function usage above isnt throwing an error
 	// when we get it to open a totally invalid yaml file. Dealing with that separately here....
-	if _, map_err := yaml.Map(); map_err != nil {
+	if _, mapErr := yaml.Map(); mapErr != nil {
 		return errors.New("Error reading YAML text")
 	}
 
