@@ -43,9 +43,10 @@ func (c *ResembleConfig) Parse(data []byte) error {
 	}
 	c.TypeName = typeName
 
-	matchersYaml := yaml.Get("matchers")
-	if err == nil {
-		c.Matchers, err = getMatchersFromYaml(matchersYaml)
+	c.Matchers, err = getMatchersFromYaml(yaml.Get("matchers"))
+
+	if err != nil {
+		return errors.New("Resemble config: invalid `matchers`")
 	}
 	return nil
 }
@@ -54,33 +55,32 @@ func getMatchersFromYaml(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher,
 
 	matchersMap, mapErr := matchersYaml.Map()
 	if mapErr != nil {
-		return matchers, errors.New("Error reading matchers node")
+		return matchers, nil
 	}
-	arraySize := len(matchersMap)
-	matchers = make([]HttpMatcher, arraySize)
+	matchers = make([]HttpMatcher, len(matchersMap))
 
 	var count int
-	path_regex, err := matchersYaml.Get("path_regex").String()
+	pathRegex, err := matchersYaml.Get("path_regex").String()
 	if err == nil {
-		matchers[count], err = NewUrlPathHttpMatcher(path_regex)
+		matchers[count], err = NewUrlPathHttpMatcher(pathRegex)
 		if err != nil {
 			return matchers, err
 		}
 		count++
 	}
 
-	verb_regex, err := matchersYaml.Get("verb_regex").String()
+	verbRegex, err := matchersYaml.Get("verb_regex").String()
 	if err == nil {
-		matchers[count], err = NewVerbHttpMatcher(verb_regex)
+		matchers[count], err = NewVerbHttpMatcher(verbRegex)
 		if err != nil {
 			return matchers, err
 		}
 		count++
 	}
 
-	host_regex, err := matchersYaml.Get("host_regex").String()
+	hostRegex, err := matchersYaml.Get("host_regex").String()
 	if err == nil {
-		matchers[count], err = NewHostHttpMatcher(host_regex)
+		matchers[count], err = NewHostHttpMatcher(hostRegex)
 		if err != nil {
 			return matchers, err
 		}
