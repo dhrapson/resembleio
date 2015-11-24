@@ -46,5 +46,11 @@ endpoint:
 		  mode: reallybroken
 		  content:
 		    file: /path/to/brokenservice.body
+	security:
+		authentication:
+			basic/oauth...
+		SSL_certs..
+modes:
 stats:
 performance:
+
