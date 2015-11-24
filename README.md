@@ -18,7 +18,7 @@ The intention is to provide an easy way to configure a lightweight HTTP service 
 ## To download
 
 ```
-go get github.com/dhrapson/resemble/resemble
+go get github.com/dhrapson/resembleio/resemble
 ```
 This will download and install the go executable, then put it into your $GOPATH/bin directory.
 It would be a good idea to add $GOPATH/bin to your PATH

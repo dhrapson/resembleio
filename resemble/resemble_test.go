@@ -16,7 +16,7 @@
 package main_test
 
 import (
-	. "github.com/dhrapson/resemble/resemble"
+	. "github.com/dhrapson/resembleio/resemble"
 	"os/exec"
 	"regexp"
 

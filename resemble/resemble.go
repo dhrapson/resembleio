@@ -18,7 +18,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/dhrapson/resemble/configure"
+	"github.com/dhrapson/resembleio/configure"
 	"io/ioutil"
 	"log"
 	"os"

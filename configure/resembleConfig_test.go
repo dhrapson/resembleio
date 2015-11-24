@@ -16,7 +16,7 @@
 package configure_test
 
 import (
-	. "github.com/dhrapson/resemble/configure"
+	. "github.com/dhrapson/resembleio/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"io/ioutil"
