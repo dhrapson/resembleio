@@ -65,7 +65,7 @@ func matchHttpRequest(matchers []HttpMatcher, req *http.Request) bool {
 		return false
 	}
 	for i := 0; i < len(matchers); i++ {
-		if ! matchers[i].Match(req) {
+		if !matchers[i].Match(req) {
 			return false
 		}
 	}
