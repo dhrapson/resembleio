@@ -120,4 +120,35 @@ describe 'The resemble Server' do
 		end
 	end
 
+	context 'when running a very specific HTTP configuration' do
+		attr_reader :process_details
+		before(:all) do
+			@process_details = start_process('resemble spec/integration/fixtures/http_full_resemble.yml')
+		end
+
+		after(:all) do
+			terminate_process(process_details)
+		end
+
+		it 'raises an API endpoint' do
+			response = client.get('/resemble')
+			expect(response.status).to be 200
+		end
+
+		it 'correctly mis-matches an unconfigured URL path' do
+			response = client.get('/notconfiguredurlpath')
+			expect(response.status).to be 404
+		end
+
+		it 'correctly mis-matches an unconfigured HTTP verb' do
+			response = client.put('/test')
+			expect(response.status).to be 404
+		end
+
+		it 'correctly matches a configured HTTP verb & path' do
+			response = client.get('/test')
+			expect(response.status).to be 200
+		end
+	end
+
 end

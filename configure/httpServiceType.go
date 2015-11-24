@@ -26,8 +26,7 @@ type HttpServiceType struct {
 }
 
 func newHttpServiceType(config ResembleConfig) HttpServiceType {
-	m := []HttpMatcher{}
-	return HttpServiceType{name: "HTTP", matchers: m}
+	return HttpServiceType{name: "HTTP", matchers: config.Matchers}
 }
 
 func (s HttpServiceType) Name() string {
@@ -66,9 +65,9 @@ func matchHttpRequest(matchers []HttpMatcher, req *http.Request) bool {
 		return false
 	}
 	for i := 0; i < len(matchers); i++ {
-		if matchers[i].Match(req) {
-			return true
+		if ! matchers[i].Match(req) {
+			return false
 		}
 	}
-	return false
+	return true
 }
