@@ -86,5 +86,29 @@ func getMatchersFromYaml(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher,
 		}
 		count++
 	}
-	return matchers, err
+
+	paramsArray, err := getQueryParamsFromYaml(matchersYaml.Get("query_params"))
+
+	allMatchers := append(matchers[0:count], paramsArray...)
+	return allMatchers, err
+}
+
+func getQueryParamsFromYaml(paramsYaml *simpleyaml.Yaml) (matchers []HttpMatcher, err error) {
+	paramsArray, err := paramsYaml.Array()
+	params := make([]HttpMatcher, len(paramsArray))
+	for i := 0; i < len(paramsArray); i++ {
+		keyRegex, err := paramsYaml.GetIndex(i).Get("key_regex").String()
+		if err != nil {
+			return params, err
+		}
+		valueRegex, err := paramsYaml.GetIndex(i).Get("value_regex").String()
+		if err != nil {
+			return params, err
+		}
+		params[i], err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
+		if err != nil {
+			return params, err
+		}
+	}
+	return params, nil
 }

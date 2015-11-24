@@ -138,17 +138,27 @@ describe 'The resemble Server' do
 		end
 
 		it 'correctly mis-matches an unconfigured URL path' do
-			response = client.get('/notconfiguredurlpath')
+			response = client.get('/notconfiguredurlpath?id=abc123')
 			expect(response.status).to be 404
 		end
 
 		it 'correctly mis-matches an unconfigured HTTP verb' do
-			response = client.put('/test')
+			response = client.put('/test?id=abc123')
+			expect(response.status).to be 404
+		end
+
+		it 'correctly mis-matches an unconfigured HTTP verb' do
+			response = client.put('/test?id=abc123')
+			expect(response.status).to be 404
+		end
+
+		it 'correctly mis-matches a URL without required query params' do
+			response = client.get('/test')
 			expect(response.status).to be 404
 		end
 
 		it 'correctly matches a configured endpoint' do
-			response = client.get('/test')
+			response = client.get('/test?id=abc123')
 			expect(response.status).to be 200
 		end
 	end

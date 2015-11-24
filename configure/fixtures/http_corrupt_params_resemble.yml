@@ -6,6 +6,3 @@ matchers:
   host_regex: localhost
   query_params:
     - key_regex: guid
-      value_regex: "[a-zA-Z-0-9-]*"
-    - key_regex: abc
-      value_regex: "123"

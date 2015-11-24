@@ -81,6 +81,50 @@ var _ = Describe("ResembleConfig", func() {
 			})
 		})
 
+		Context("when it contains a partial HTTP type without matchers", func() {
+
+			BeforeEach(func() {
+				filename = "fixtures/http_no_matchers_resemble.yml"
+			})
+
+			It("should return a configuration", func() {
+				err = config.Parse(configData)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(config.TypeName).To(Equal("HTTP"))
+			})
+		})
+
+		Context("when it contains a partial HTTP type without query params", func() {
+
+			BeforeEach(func() {
+				filename = "fixtures/http_no_query_params_resemble.yml"
+			})
+
+			It("should return a configuration", func() {
+				err = config.Parse(configData)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(config.TypeName).To(Equal("HTTP"))
+				pathMatcher, _ := NewUrlPathHttpMatcher("/test")
+				Expect(config.Matchers[0]).To(Equal(pathMatcher))
+				verbMatcher, _ := NewVerbHttpMatcher("GET|POST")
+				Expect(config.Matchers[1]).To(Equal(verbMatcher))
+				hostMatcher, _ := NewHostHttpMatcher("localhost")
+				Expect(config.Matchers[2]).To(Equal(hostMatcher))
+			})
+		})
+
+		Context("when it contains an HTTP type corrupt query params", func() {
+
+			BeforeEach(func() {
+				filename = "fixtures/http_corrupt_params_resemble.yml"
+			})
+
+			It("should raise an error", func() {
+				err = config.Parse(configData)
+				Expect(err).To(HaveOccurred())
+			})
+		})
+
 		Context("when it contains a full HTTP type", func() {
 
 			BeforeEach(func() {
@@ -97,6 +141,10 @@ var _ = Describe("ResembleConfig", func() {
 				Expect(config.Matchers[1]).To(Equal(verbMatcher))
 				hostMatcher, _ := NewHostHttpMatcher("localhost")
 				Expect(config.Matchers[2]).To(Equal(hostMatcher))
+				paramMatcher1, _ := NewQueryParamHttpMatcher("guid", "[a-zA-Z-0-9-]*")
+				Expect(config.Matchers[3]).To(Equal(paramMatcher1))
+				paramMatcher2, _ := NewQueryParamHttpMatcher("abc", "123")
+				Expect(config.Matchers[4]).To(Equal(paramMatcher2))
 			})
 		})
 	})
