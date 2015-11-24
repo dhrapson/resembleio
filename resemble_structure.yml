@@ -1,0 +1,50 @@
+resemble_structure.yml
+#############
+# current
+#############
+---
+type: HTTP
+matchers:
+  path_regex: /test
+  verb_regex: GET|POST
+  host_regex: localhost
+  query_params:
+    - key_regex: id
+      value_regex: "[a-zA-Z-0-9-]*"
+
+#############
+# final
+#############
+---
+type: HTTP
+endpoint:
+  name: my_rest_endpoint
+	matchers:
+	    - name: my_matcher (OPTIONAL NAME. AUTOMATICALLY GETS PREFIXED with endpointname)
+			  path_regex: /test
+			  verb_regex: GET|POST
+			  host_regex: localhost
+			  query_params:
+				- key_regex: id
+				  value_regex: "[a-zA-Z-0-9-]*"
+			  headers:
+				- name_regex: Accept
+				  value_regex: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+				- name_regex: X-Forwarded-For
+				  value_regex: 10.0.0.1
+
+	responders:
+		- name: this (OPTIONAL NAME. AUTOMATICALLY GETS PREFIXED with endpointname) (DEFAULT is zero if no mode given)
+		  mode: normal
+		  content:
+			dir: /tmp/dir/full/of/happy/files
+		  headers:
+			- name: Content-Type
+			  value: application/json
+
+		- name: brokenservice
+		  mode: reallybroken
+		  content:
+		    file: /path/to/brokenservice.body
+stats:
+performance:
