@@ -106,6 +106,7 @@ describe 'The resemble Server' do
 
 	context 'when running the minimal configuration' do
 		attr_reader :process_details
+
 		before(:all) do
 			@process_details = start_process('resemble spec/integration/fixtures/min_rest_resemble.yml')
 		end
@@ -122,6 +123,7 @@ describe 'The resemble Server' do
 
 	context 'when running a very specific HTTP configuration' do
 		attr_reader :process_details
+
 		before(:all) do
 			@process_details = start_process('resemble spec/integration/fixtures/http_full_resemble.yml')
 		end
@@ -145,7 +147,7 @@ describe 'The resemble Server' do
 			expect(response.status).to be 404
 		end
 
-		it 'correctly matches a configured HTTP verb & path' do
+		it 'correctly matches a configured endpoint' do
 			response = client.get('/test')
 			expect(response.status).to be 200
 		end
