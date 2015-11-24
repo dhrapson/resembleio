@@ -71,7 +71,7 @@ func getMatchersFromYaml(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher,
 
 	verb_regex, err := matchersYaml.Get("verb_regex").String()
 	if err == nil {
-		matchers[count], err = NewHttpVerbMatcher(verb_regex)
+		matchers[count], err = NewVerbHttpMatcher(verb_regex)
 		if err != nil {
 			return matchers, err
 		}

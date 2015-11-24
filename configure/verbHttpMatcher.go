@@ -20,11 +20,11 @@ import (
 	"regexp"
 )
 
-type HttpVerbMatcher struct {
+type VerbHttpMatcher struct {
 	regex *regexp.Regexp
 }
 
-func NewHttpVerbMatcher(regularExpr string) (matcher HttpVerbMatcher, err error) {
+func NewVerbHttpMatcher(regularExpr string) (matcher VerbHttpMatcher, err error) {
 	compiledRegex, err := regexp.Compile(regularExpr)
 	if err == nil {
 		matcher.regex = compiledRegex
@@ -32,10 +32,10 @@ func NewHttpVerbMatcher(regularExpr string) (matcher HttpVerbMatcher, err error)
 	return matcher, err
 }
 
-func (m HttpVerbMatcher) Match(req *http.Request) bool {
+func (m VerbHttpMatcher) Match(req *http.Request) bool {
 	return m.MatchVerb(req.Method)
 }
 
-func (m HttpVerbMatcher) MatchVerb(verb string) bool {
+func (m VerbHttpMatcher) MatchVerb(verb string) bool {
 	return m.regex.MatchString(verb)
 }

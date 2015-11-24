@@ -21,18 +21,18 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("HttpVerbMatcher", func() {
+var _ = Describe("VerbHttpMatcher", func() {
 
 	var (
 		regex   string
-		matcher HttpVerbMatcher
+		matcher VerbHttpMatcher
 		err     error
 	)
 
 	Describe("when using a valid regex", func() {
 
 		JustBeforeEach(func() {
-			matcher, err = NewHttpVerbMatcher(regex)
+			matcher, err = NewVerbHttpMatcher(regex)
 		})
 
 		Context("when given an exactly matching regexp", func() {
@@ -83,7 +83,7 @@ var _ = Describe("HttpVerbMatcher", func() {
 		})
 
 		It("should raise an error on creating the matcher", func() {
-			matcher, err = NewHttpVerbMatcher(regex)
+			matcher, err = NewVerbHttpMatcher(regex)
 			Expect(err).To(HaveOccurred())
 		})
 	})

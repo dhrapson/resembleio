@@ -93,7 +93,7 @@ var _ = Describe("ResembleConfig", func() {
 				Expect(config.TypeName).To(Equal("HTTP"))
 				pathMatcher, _ := NewUrlPathHttpMatcher("/test")
 				Expect(config.Matchers[0]).To(Equal(pathMatcher))
-				verbMatcher, _ := NewHttpVerbMatcher("GET|POST")
+				verbMatcher, _ := NewVerbHttpMatcher("GET|POST")
 				Expect(config.Matchers[1]).To(Equal(verbMatcher))
 			})
 		})
