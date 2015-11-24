@@ -151,4 +151,20 @@ describe 'The resemble Server' do
 		end
 	end
 
+	context 'when running a config with a non-existing host config' do
+		attr_reader :process_details
+
+		before(:all) do
+			@process_details = start_process('resemble spec/integration/fixtures/http_bad_host_resemble.yml')
+		end
+
+		after(:all) do
+			terminate_process(process_details)
+		end
+		it 'correctly mis-matches the request' do
+			response = client.get('/test')
+			expect(response.status).to be 404
+		end
+
+	end
 end

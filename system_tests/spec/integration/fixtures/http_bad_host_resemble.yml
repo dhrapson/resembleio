@@ -1,0 +1,4 @@
+---
+type: HTTP
+matchers:
+  host_regex: somenonexistinghost

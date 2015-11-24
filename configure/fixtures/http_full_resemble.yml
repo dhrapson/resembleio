@@ -3,3 +3,4 @@ type: HTTP
 matchers:
   path_regex: /test
   verb_regex: GET|POST
+  host_regex: localhost

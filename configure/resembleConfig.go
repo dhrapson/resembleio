@@ -77,5 +77,14 @@ func getMatchersFromYaml(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher,
 		}
 		count++
 	}
+
+	host_regex, err := matchersYaml.Get("host_regex").String()
+	if err == nil {
+		matchers[count], err = NewHostHttpMatcher(host_regex)
+		if err != nil {
+			return matchers, err
+		}
+		count++
+	}
 	return matchers, err
 }
