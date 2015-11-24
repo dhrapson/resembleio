@@ -153,7 +153,7 @@ describe 'The resemble Server' do
 		end
 	end
 
-	context 'when running a config with a non-existing host config' do
+	context 'when running a config with a non-existing host' do
 		attr_reader :process_details
 
 		before(:all) do
@@ -167,6 +167,21 @@ describe 'The resemble Server' do
 			response = client.get('/test')
 			expect(response.status).to be 404
 		end
+	end
 
+	context 'when running a config URL path containing a guid' do
+		attr_reader :process_details
+
+		before(:all) do
+			@process_details = start_process('resemble spec/integration/fixtures/http_with_guid_resemble.yml')
+		end
+
+		after(:all) do
+			terminate_process(process_details)
+		end
+		it 'correctly matches the request' do
+			response = client.get('/test/30dd879c-ee2f-11db-8314-0800200c9a66')
+			expect(response.status).to be 200
+		end
 	end
 end
