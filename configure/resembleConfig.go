@@ -46,34 +46,37 @@ func (c *ResembleConfig) Parse(data []byte) error {
 
 	matchersYaml := yaml.Get("matchers")
 	if err == nil {
-		c.Matchers, err = getMatchers(matchersYaml)
+		c.Matchers, err = getMatchersFromYaml(matchersYaml)
 	}
 	return nil
 }
 
-func getMatchers(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher, err error) {
+func getMatchersFromYaml(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher, err error) {
 
-	matchersType, err := matchersYaml.Array()
-	arraySize := len(matchersType)
+	matchersMap, mapErr := matchersYaml.Map()
+	if mapErr != nil {
+		return matchers, errors.New("Error reading matchers node")
+	}
+	arraySize := len(matchersMap)
 	matchers = make([]HttpMatcher, arraySize)
-	for i := 0; i < arraySize; i++ {
-		matcher := matchersYaml.GetIndex(i)
-		matcherType, err := matcher.Get("type").String()
+
+	var count int
+	path_regex, err := matchersYaml.Get("path_regex").String()
+	if err == nil {
+		matchers[count], err = NewUrlPathHttpMatcher(path_regex)
 		if err != nil {
-			return matchers, errors.New("Resemble config: invalid `matcher->type`")
+			return matchers, err
 		}
-		if matcherType == "url_path" {
-			path_regex, err := matcher.Get("path_regex").String()
-			if err != nil {
-				log.Fatalln("missing path_regex for url_path matcher")
-			}
-			matchers[i], err = NewUrlPathHttpMatcher(path_regex)
-			if err != nil {
-				log.Fatalln("invalid path_regex for url_path matcher", path_regex)
-			}
-		} else {
-			log.Fatalln("missing url_path for ")
+		count++
+	}
+
+	verb_regex, err := matchersYaml.Get("verb_regex").String()
+	if err == nil {
+		matchers[count], err = NewHttpVerbMatcher(verb_regex)
+		if err != nil {
+			return matchers, err
 		}
+		count++
 	}
 	return matchers, err
 }
