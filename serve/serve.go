@@ -17,10 +17,10 @@ package serve
 
 import (
 	"fmt"
-	"net/http"
+	. "github.com/dhrapson/resembleio/configure"
 )
 
 func Serve(s ServiceType) {
-	fmt.Println("Serving the", sd.ServiceType, "service")
-	s.Serve
+	fmt.Println("Serving the", s.Name(), "service")
+	s.Serve()
 }
