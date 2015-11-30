@@ -66,6 +66,7 @@ describe 'The resemble Server' do
 		it 'starts anyway' do
 			results = spawn_process('resemble')
 			# a -1 exit status indicates it had to be killed
+			puts 'netstat -ln'
 			expect(results[:exitstatus]).to be -1
 			expect(results[:output]).to include('Starting Resemble Service')
 		end
