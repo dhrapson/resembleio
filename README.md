@@ -5,6 +5,8 @@ A declaritive Service Virtualization and Stubbing utility written in Golang
 This software is currently under contruction, prior to initial release, using the Product Model style of management.
 The publicly available [product backlog](https://www.pivotaltracker.com/n/projects/1485132) can give you some idea of the intended direction and velocity.
 
+The project is building in [TravisCI](https://travis-ci.org/dhrapson/resembleio)
+
 ## Intended users
 The intention is to provide an easy way to configure a lightweight HTTP service that imitates a real-world HTTP service of some kind. Using resemble would mean that a full copy of the HTTP service being consumed might not be required until staging / production. Typical usage patterns will include:
 
