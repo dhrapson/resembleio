@@ -9,4 +9,5 @@ before_install:
   - rvm install 2.1.7
 script:
   - go test -v ./...
+  - chmod +x run_specs.sh
   - ./run_specs.sh
