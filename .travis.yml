@@ -5,8 +5,4 @@ notifications:
   email:
     recipients:
       - dave@dhrapson.com
-before_install:
-   - rvm install 2.1.7
-script:
-	- run_specs.sh
-  - bundle exec rspec spec
+
