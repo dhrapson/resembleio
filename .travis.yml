@@ -9,4 +9,4 @@ before_install:
   - rvm install 2.1.7
 script:
   - go test -v ./...
-  - run_specs.sh
+  - src/github.com/dhrapson/resembleio/run_specs.sh
