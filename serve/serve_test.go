@@ -46,6 +46,6 @@ var _ = Describe("Serve", func() {
 	It("calls serve on the ServiceType", func() {
 		Serve(serviceType)
 		serviceType.Configure()
-		Expect(serviceType.served).To(BeFalse())
+		Expect(serviceType.served).To(BeTrue())
 	})
 })
