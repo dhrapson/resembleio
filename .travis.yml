@@ -5,4 +5,8 @@ notifications:
   email:
     recipients:
       - dave@dhrapson.com
-
+before_install:
+  - rvm install 2.1.7
+script:
+  - go test -v ./...
+  - run_specs.sh
