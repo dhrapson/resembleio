@@ -27,6 +27,7 @@ describe 'The resemble Server' do
 		  Process.wait(cmd_pid)
 		  @exitstatus = $?.exitstatus
 		end
+		sleep 1
 		{
 			pid: cmd_pid,
 			pipe_cmd_in: pipe_cmd_in,
@@ -66,9 +67,6 @@ describe 'The resemble Server' do
 		it 'starts anyway' do
 			results = spawn_process('resemble')
 			# a -1 exit status indicates it had to be killed
-			STDOUT.puts `netstat -ln`
-			STDOUT.puts `netstat -an`
-			STDOUT.puts `ping localhost`
 			expect(results[:exitstatus]).to be -1
 			expect(results[:output]).to include('Starting Resemble Service')
 		end
