@@ -7,6 +7,7 @@ notifications:
       - dave@dhrapson.com
 before_install:
   - rvm install 2.1.7
+  - chmod +x build_release.sh
   - chmod +x run_specs.sh
 env:
   # "gvm update" resets GOOS and GOARCH environment variable, workaround it by setting
@@ -19,6 +20,6 @@ env:
     - BUILD_GOOS=windows
 script:
   - gvm cross $BUILD_GOOS $BUILD_GOARCH
-  - GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go build resemble/*.go
+  - GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS ./build_release.sh
   # only test on linux
   - if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -bench=. && ./run_specs.sh; fi
