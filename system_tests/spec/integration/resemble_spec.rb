@@ -21,13 +21,12 @@ describe 'The resemble Server' do
 	def start_process(cmd)
 		pipe_cmd_in, pipe_cmd_out = IO.pipe
 		cmd_pid = Process.spawn(cmd, :out => pipe_cmd_out, :err => pipe_cmd_out)
-
+		sleep 1
 		@exitstatus = :not_done
 		Thread.new do
 		  Process.wait(cmd_pid)
 		  @exitstatus = $?.exitstatus
 		end
-		sleep 1
 		{
 			pid: cmd_pid,
 			pipe_cmd_in: pipe_cmd_in,
