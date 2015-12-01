@@ -55,6 +55,9 @@ describe 'The resemble Server' do
 		process_details = start_process(cmd)
 		result = terminate_process(process_details, initial_wait_seconds)
 		puts "result: #{result}"
+		puts "exitstatus: #{result[:existstatus]}, #{result[:existstatus].class}"
+		puts "output: #{result[:output]}, #{result[:output].class}"
+		result
 	end
 
 	let(:client) do
@@ -67,6 +70,7 @@ describe 'The resemble Server' do
 
 		it 'starts anyway' do
 			results = spawn_process('resemble')
+			puts "starts_anyway results: #{results}"
 			# a -1 exit status indicates it had to be killed
 			expect(results[:exitstatus]).to be -1
 			expect(results[:output]).to include('Starting Resemble Service')
