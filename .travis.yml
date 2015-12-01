@@ -1,4 +1,6 @@
 language: go
+go:
+- tip
 notifications:
   email:
     recipients:
