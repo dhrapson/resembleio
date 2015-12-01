@@ -17,7 +17,12 @@ The intention is to provide an easy way to configure a lightweight HTTP service 
 * a CI server or functional tester running some immitation services that are configured to fail in a realistic way in order to test failure cases in a consumer app
 * a developer wanting to run a simple HTTP static file server locally without the need for a heavy installation
 
-## To download
+## Binary download
+[linux 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/linux/resemble)
+[windows 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/windows/resemble.exe)
+[ios 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/darwin/resemble)
+
+## Source download
 
 ```
 go get github.com/dhrapson/resembleio/resemble
