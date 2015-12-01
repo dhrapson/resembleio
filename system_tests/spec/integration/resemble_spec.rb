@@ -53,7 +53,8 @@ describe 'The resemble Server' do
 
 	def spawn_process(cmd,initial_wait_seconds=5)
 		process_details = start_process(cmd)
-		terminate_process(process_details, initial_wait_seconds)
+		result = terminate_process(process_details, initial_wait_seconds)
+		puts "result: #{result}"
 	end
 
 	let(:client) do
