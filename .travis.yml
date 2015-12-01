@@ -28,6 +28,10 @@ script:
   - GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS ./build_release.sh
   # only test on linux
   - if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -v ./... && ./run_specs.sh; fi
+  - pwd
+  - ls -l
+  - ls -l binaries
+  - ls -l binaries/latest
 deploy:
   provider: s3
   access_key_id: AKIAIV6NA7TQJWGJ7BDA
