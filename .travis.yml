@@ -1,14 +1,17 @@
 language: go
-go:
-- tip
 notifications:
   email:
     recipients:
     - dave@dhrapson.com
 before_install:
+- bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+- source $HOME/.gvm/scripts/gvm
 - rvm install 2.1.7
 - chmod +x build_release.sh
 - chmod +x run_specs.sh
+- gvm install go1.4
+- gvm use go1.4
+- export GOPATH=$HOME/gopath
 env:
   global:
   - BUILD_GOARCH=amd64
@@ -19,8 +22,7 @@ env:
 script:
 - gvm cross $BUILD_GOOS $BUILD_GOARCH
 - GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS ./build_release.sh
-- if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test
-  -v ./... && ./run_specs.sh; fi
+- if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -v ./... && ./run_specs.sh; fi
 deploy:
   provider: s3
   access_key_id: AKIAIV6NA7TQJWGJ7BDA
