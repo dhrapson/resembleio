@@ -25,7 +25,7 @@ describe 'The resemble Server' do
 		@exitstatus = :not_done
 		Thread.new do
 		  Process.wait(cmd_pid)
-		  @exitstatus = $?.exitstatus
+		  @exitstatus = $?.exitstatus if $?.exited?
 		end
 		{
 			pid: cmd_pid,
