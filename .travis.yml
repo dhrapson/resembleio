@@ -22,4 +22,4 @@ script:
   - gvm cross $BUILD_GOOS $BUILD_GOARCH
   - GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS ./build_release.sh
   # only test on linux
-  - if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -bench=. && ./run_specs.sh; fi
+  - if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -v ./... && ./run_specs.sh; fi
