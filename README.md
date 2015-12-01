@@ -18,9 +18,10 @@ The intention is to provide an easy way to configure a lightweight HTTP service 
 * a developer wanting to run a simple HTTP static file server locally without the need for a heavy installation
 
 ## Binary download
-[linux 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/linux/resemble)
-[windows 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/windows/resemble.exe)
-[ios 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/darwin/resemble)
+There are binaries available for the major OS platforms:
+* [linux 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/linux/resemble)
+* [windows 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/windows/resemble.exe)
+* [ios 64-bit](http://resembleio.s3-website-eu-west-1.amazonaws.com/latest/amd64/darwin/resemble)
 
 ## Source download
 
