@@ -11,7 +11,7 @@ before_install:
   - rvm install 2.1.7
   - chmod +x build_release.sh
   - chmod +x run_specs.sh
-  - export GOPATH=$HOME/go
+  - export GOPATH=$HOME/gopath
 env:
   # "gvm update" resets GOOS and GOARCH environment variable, workaround it by setting
   # BUILD_GOOS and BUILD_GOARCH and overriding GOARCH and GOOS in the build script
