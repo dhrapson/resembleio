@@ -1,38 +1,30 @@
 language: go
 go:
-- tip
+  - tip
 notifications:
   email:
     recipients:
-    - dave@dhrapson.com
+      - dave@dhrapson.com
 before_install:
-- bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-- source $HOME/.gvm/scripts/gvm
-- rvm install 2.1.7
-- chmod +x build_release.sh
-- chmod +x run_specs.sh
-- gvm install go1.4
-- gvm use go1.4
-- export GOPATH=$HOME/gopath
+  - bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+  - source $HOME/.gvm/scripts/gvm
+  - rvm install 2.1.7
+  - chmod +x build_release.sh
+  - chmod +x run_specs.sh
+  - gvm install go1.4
+  - gvm use go1.4
+  - export GOPATH=$HOME/gopath
 env:
+  # "gvm update" resets GOOS and GOARCH environment variable, workaround it by setting
+  # BUILD_GOOS and BUILD_GOARCH and overriding GOARCH and GOOS in the build script
   global:
-  - BUILD_GOARCH=amd64
+    - BUILD_GOARCH=amd64
   matrix:
-  - BUILD_GOOS=linux
-  - BUILD_GOOS=darwin
-  - BUILD_GOOS=windows
+    - BUILD_GOOS=linux
+    - BUILD_GOOS=darwin
+    - BUILD_GOOS=windows
 script:
-- gvm cross $BUILD_GOOS $BUILD_GOARCH
-- GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS ./build_release.sh
-- if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -v ./... && ./run_specs.sh; fi
-deploy:
-  provider: s3
-  access_key_id: AKIAIV6NA7TQJWGJ7BDA
-  secret_access_key:
-    secure: E4FopQc0eyh45ib/bLUE5x9fICKKXPWxs8UmenOmHyV/4yztAyIHZkyf0xluJO2hQ9qd6w15FnWBmYlQ9AcjPydedOw/uU8u4hOdVg6tvq6TbJKXziviiEkh+wlcZguJbZY8dQ5iJVyr5FUS4+JPtCWJ2aNJSHMAc0Hb60v2fcTA9/xPFzJ30cB1iRL4lqanyJYrm0hDSlazoruzARGXpCFJuRyWMHgZh+C/KTP9OaHWgSPe25eOzQqcvh8xKbhYf6TLLNO6pMUUAkD5x27LhLMHAv0Bq2dTZr5Z9eLJjAYA0tt/niMgM3hNvGUBG9pLleWzaB6QpvHnE8s04ah6Fhxl+JnfPR+1TOuvcLk3CIP5C7A8i1WEh7NOKolLATuIg8YhJ/2KGY2EwPpwgcRUXfr+ms3wJeR6b542daIkJPzhPu8lepFyBQoRn0KVjnWFBjl2RASKZipgUndVCNqB0qSzzKJ2nEZSQII5rw1r3KHKIG2HmshDfGwsSfh8h13Tn8DSKBm0iO9qb1CkbjzDIFDoZZZPjO8KTmc/M1mi3GGGCZr2Aj3E1CQHZMDTe0CxdqOZp698h7nKCL071KXv7dDGI4OlBEKftHXshTqcm824fLJkpMoMwdVFKnI7emiFjpW9NWes7/Yh5EKQP2eqqmj2G7Bpgkqntk2npf5BcYg=
-  bucket: resembleio
-  local-dir: binaries/latest
-  upload-dir: latest
-  acl: public_read
-  on:
-    repo: dhrapson/resembleio
+  - gvm cross $BUILD_GOOS $BUILD_GOARCH
+  - GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS ./build_release.sh
+  # only test on linux
+  - if [ $BUILD_GOOS == "linux" ]; then GOARCH=$BUILD_GOARCH GOOS=$BUILD_GOOS go test -v ./... && ./run_specs.sh; fi
