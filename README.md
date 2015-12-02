@@ -7,6 +7,8 @@ The publicly available [product backlog](https://www.pivotaltracker.com/n/projec
 
 The project is building in [TravisCI](https://travis-ci.org/dhrapson/resembleio)
 
+![Build Status](https://travis-ci.org/dhrapson/resembleio.svg)
+
 ## Intended users
 The intention is to provide an easy way to configure a lightweight HTTP service that imitates a real-world HTTP service of some kind. Using resemble would mean that a full copy of the HTTP service being consumed might not be required until staging / production. Typical usage patterns will include:
 
