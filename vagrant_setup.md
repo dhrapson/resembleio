@@ -17,12 +17,12 @@ A high level outline of the setup steps is as below.
 1. `git config --global user.name "YourName"`
 1. `git config --global user.email "YourEmail"`
 1. `sudo apt-get install curl`
-1. Download go from https://golang.org/doc/install?download=go1.5.1.linux-386.tar.gz
-1. On your desktop: `vagrant scp go1.5.1.linux-386.tar.gz default:/home/vagrant/go1.5.1.linux-386.tar.gz`
+1. Download go from https://golang.org/doc/install?download=go1.4.3.linux-386.tar.gz. Stuck on 1.4 until the make.bash fix gets put live and a new binary release is made
+1. On your desktop: `vagrant scp go1.4.3.linux-386.tar.gz default:/home/vagrant/go1.4.3.linux-386.tar.gz`
 1. On the vagrant VM: `sudo tar -C /usr/local -xzvf go1.5.1.linux-386.tar.gz`
-1. Add to ~/.profile: `export PATH=$PATH:/usr/local/go/bin`
+1. bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+1. source $HOME/.gvm/scripts/gvm
 1. Add to ~/.profile: `export GOPATH=$HOME/gopath`
-1. Add to ~/.profile: `export PATH=$PATH:$GOPATH/bin`
 1. `source ~/.profile`
 1. `command curl -sSL https://rvm.io/mpapis.asc | gpg --import -`
 1. `\curl -L https://get.rvm.io |    bash -s stable --ruby --autolibs=enable --auto-dotfiles`
@@ -39,6 +39,8 @@ A high level outline of the setup steps is as below.
 1. `go test -v ./...`
 1. `chmod +x run_specs.sh`
 1. `./run_specs.sh`
+
+Check the travis yaml file for cross-platform build instructions
 
 # When finished
 1. vagrant suspend default
