@@ -27,14 +27,14 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 		keyRegex    string
 		valueRegex  string
 		queryParams map[string][]string
-		matcher     QueryParamHttpMatcher
+		matcher     KeyValuesHttpMatcher
 		err         error
 	)
 
 	Describe("when using a valid regex", func() {
 
 		JustBeforeEach(func() {
-			matcher, err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
+			matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
 		})
 
 		Context("when given an exactly matching regexp", func() {
@@ -49,7 +49,7 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 
 			It("should return true", func() {
 				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchParam(queryParams)
+				result := matcher.MatchKeyValues(queryParams)
 				Expect(result).To(BeTrue())
 			})
 		})
@@ -66,7 +66,7 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 
 			It("should return true", func() {
 				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchParam(queryParams)
+				result := matcher.MatchKeyValues(queryParams)
 				Expect(result).To(BeTrue())
 			})
 		})
@@ -85,7 +85,7 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 
 			It("should return true", func() {
 				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchParam(queryParams)
+				result := matcher.MatchKeyValues(queryParams)
 				Expect(result).To(BeTrue())
 			})
 		})
@@ -102,7 +102,7 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 
 			It("should return false", func() {
 				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchParam(queryParams)
+				result := matcher.MatchKeyValues(queryParams)
 				Expect(result).To(BeFalse())
 				Expect(err).NotTo(HaveOccurred())
 			})
@@ -120,7 +120,7 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 			})
 
 			It("should raise an error on creating the matcher", func() {
-				matcher, err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
+				matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
 				Expect(err).To(HaveOccurred())
 			})
 		})
@@ -133,7 +133,7 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 			})
 
 			It("should raise an error on creating the matcher", func() {
-				matcher, err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
+				matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
 				Expect(err).To(HaveOccurred())
 			})
 		})

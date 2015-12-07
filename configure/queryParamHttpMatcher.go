@@ -17,41 +17,12 @@ package configure
 
 import (
 	"net/http"
-	"regexp"
 )
 
 type QueryParamHttpMatcher struct {
-	keyRegex   *regexp.Regexp
-	valueRegex *regexp.Regexp
-}
-
-func NewQueryParamHttpMatcher(keyRegex string, valueRegex string) (matcher QueryParamHttpMatcher, err error) {
-
-	compiledKeyRegex, err := regexp.Compile(keyRegex)
-	if err != nil {
-		return matcher, err
-	}
-	matcher.keyRegex = compiledKeyRegex
-	compiledValueRegex, err := regexp.Compile(valueRegex)
-	if err == nil {
-		matcher.valueRegex = compiledValueRegex
-	}
-	return matcher, err
+	*KeyValuesHttpMatcher
 }
 
 func (m QueryParamHttpMatcher) Match(req *http.Request) bool {
-	return m.MatchParam(req.URL.Query())
-}
-
-func (m QueryParamHttpMatcher) MatchParam(params map[string][]string) bool {
-	for key, val := range params {
-		if m.keyRegex.MatchString(key) {
-			for i := 0; i < len(val); i++ {
-				if m.valueRegex.MatchString(val[i]) {
-					return true
-				}
-			}
-		}
-	}
-	return false
+	return m.MatchKeyValues(req.URL.Query())
 }

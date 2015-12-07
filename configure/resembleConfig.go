@@ -105,7 +105,7 @@ func getQueryParamsFromYaml(paramsYaml *simpleyaml.Yaml) (matchers []HttpMatcher
 		if err != nil {
 			return params, err
 		}
-		params[i], err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
+		params[i], err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
 		if err != nil {
 			return params, err
 		}
