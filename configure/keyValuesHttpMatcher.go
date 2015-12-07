@@ -18,6 +18,7 @@ package configure
 import (
 	"net/http"
 	"regexp"
+	"errors"
 )
 
 type KeyValuesHttpMatcher struct {
@@ -39,6 +40,18 @@ func NewKeyValuesHttpMatcher(keyRegex string, valueRegex string) (matcher KeyVal
 		matcher.valueRegex = compiledValueRegex
 	}
 	return matcher, err
+}
+
+func (m *KeyValuesHttpMatcher) acceptValidation() (err error) {
+	m.keyRegex, err = regexp.Compile(m.KeyRegexString)
+	if err != nil {
+		return errors.New("Error validating YAML text: " + err.Error())
+	}
+	m.valueRegex, err = regexp.Compile(m.ValueRegexString)
+	if err != nil {
+		return errors.New("Error validating YAML text: " + err.Error())
+	}
+	return nil
 }
 
 func (m KeyValuesHttpMatcher) Match(req *http.Request) bool {
