@@ -27,48 +27,14 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 		keyRegex    string
 		valueRegex  string
 		queryParams map[string][]string
-		matcher     KeyValuesHttpMatcher
+		matcher     QueryParamHttpMatcher
 		err         error
 	)
 
 	Describe("when using a valid regex", func() {
 
 		JustBeforeEach(func() {
-			matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-		})
-
-		Context("when given an exactly matching regexp", func() {
-
-			BeforeEach(func() {
-				keyRegex = `id`
-				valueRegex = `^123456$`
-				queryParams = map[string][]string{
-					"id": []string{"abc-here", "123456"},
-				}
-			})
-
-			It("should return true", func() {
-				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchKeyValues(queryParams)
-				Expect(result).To(BeTrue())
-			})
-		})
-
-		Context("when given a loosely matching regexp", func() {
-
-			BeforeEach(func() {
-				keyRegex = `id`
-				valueRegex = `[0-9A-Za-z-]*`
-				queryParams = map[string][]string{
-					"id": []string{"123456-abcd"},
-				}
-			})
-
-			It("should return true", func() {
-				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchKeyValues(queryParams)
-				Expect(result).To(BeTrue())
-			})
+			matcher, err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
 		})
 
 		Context("when there are bunch of parameters", func() {
@@ -90,52 +56,6 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 			})
 		})
 
-		Context("when given a non-matching id", func() {
-
-			BeforeEach(func() {
-				keyRegex = `id`
-				valueRegex = `123456`
-				queryParams = map[string][]string{
-					"id": []string{"abcd"},
-				}
-			})
-
-			It("should return false", func() {
-				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchKeyValues(queryParams)
-				Expect(result).To(BeFalse())
-				Expect(err).NotTo(HaveOccurred())
-			})
-		})
-
 	})
 
-	Describe("when using invalid regexes", func() {
-
-		Context("when the keyRegex is invalid", func() {
-
-			BeforeEach(func() {
-				keyRegex = `^abc++$`
-				valueRegex = `123456`
-			})
-
-			It("should raise an error on creating the matcher", func() {
-				matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-				Expect(err).To(HaveOccurred())
-			})
-		})
-
-		Context("when the valueRegex is invalid", func() {
-
-			BeforeEach(func() {
-				keyRegex = `123456`
-				valueRegex = `^abc++$`
-			})
-
-			It("should raise an error on creating the matcher", func() {
-				matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-				Expect(err).To(HaveOccurred())
-			})
-		})
-	})
 })
