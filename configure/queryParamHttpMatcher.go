@@ -26,9 +26,3 @@ type QueryParamHttpMatcher struct {
 func (m QueryParamHttpMatcher) Match(req *http.Request) bool {
 	return m.MatchKeyValues(req.URL.Query())
 }
-
-func NewQueryParamHttpMatcher(keyRegex string, valueRegex string) (matcher QueryParamHttpMatcher, err error) {
-	matcher = QueryParamHttpMatcher{KeyValuesHttpMatcher{keyRegex, valueRegex, nil, nil}}
-	err = matcher.acceptValidation()
-	return matcher, err
-}

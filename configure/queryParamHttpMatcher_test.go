@@ -19,6 +19,8 @@ import (
 	. "github.com/dhrapson/resembleio/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"regexp"
+	"net/http"
 )
 
 var _ = Describe("QueryParamHttpMatcher", func() {
@@ -26,36 +28,51 @@ var _ = Describe("QueryParamHttpMatcher", func() {
 	var (
 		keyRegex    string
 		valueRegex  string
-		queryParams map[string][]string
 		matcher     QueryParamHttpMatcher
+		req *http.Request
 		err         error
 	)
 
-	Describe("when using a valid regex", func() {
+	JustBeforeEach(func() {
+		key, _ := regexp.Compile(keyRegex)
+		value, _ := regexp.Compile(valueRegex)
+		matcher = QueryParamHttpMatcher{KeyValuesHttpMatcher{key, value}}
+	})
 
-		JustBeforeEach(func() {
-			matcher, err = NewQueryParamHttpMatcher(keyRegex, valueRegex)
-		})
-
-		Context("when there are bunch of parameters", func() {
+	Describe("matching", func() {
+		Context("when given an exactly matching regexp", func() {
 
 			BeforeEach(func() {
 				keyRegex = `id`
-				valueRegex = `[0-9A-Za-z-]*`
-				queryParams = map[string][]string{
-					"abc": []string{"notaguid+"},
-					"def": []string{"alsonotaguid_"},
-					"id":  []string{"", "123456-abcd"},
-				}
+				valueRegex = `^123456$`
+				req, _ = http.NewRequest("GET", "/?id=123456", nil)
+
 			})
 
-			It("should return true", func() {
+			It("should not match or throw an error", func() {
 				Expect(err).NotTo(HaveOccurred())
-				result := matcher.MatchKeyValues(queryParams)
+				result := matcher.Match(req)
 				Expect(result).To(BeTrue())
+				Expect(err).NotTo(HaveOccurred())
 			})
 		})
 
+	})
+
+	Context("when given a non-matching id", func() {
+
+		BeforeEach(func() {
+			keyRegex = `id`
+			valueRegex = `123456`
+			req, _ = http.NewRequest("GET", "/?id=abc", nil)
+		})
+
+		It("should return false", func() {
+			Expect(err).NotTo(HaveOccurred())
+			result := matcher.Match(req)
+			Expect(result).To(BeFalse())
+			Expect(err).NotTo(HaveOccurred())
+		})
 	})
 
 })
