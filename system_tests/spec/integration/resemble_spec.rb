@@ -100,7 +100,7 @@ describe 'The resemble Server' do
 		it 'errors out with a non-zero error code' do
 			results = spawn_process('resemble spec/integration/fixtures/invalid_config.yml')
 			expect($?).to_not be 0
-			expect(results[:output]).to include('Error reading YAML text')
+			expect(results[:output]).to include('Invalid config: `type`')
 		end
 	end
 

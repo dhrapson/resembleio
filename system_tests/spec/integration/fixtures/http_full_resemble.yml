@@ -1,9 +1,10 @@
 ---
 type: HTTP
 matchers:
+- name: my_matcher
   path_regex: /test
   verb_regex: GET|POST
   host_regex: localhost
   query_params:
-    - key_regex: id
-      value_regex: "[a-zA-Z-0-9-]*"
+  - key_regex: id
+    value_regex: abc123 #[a-zA-Z-0-9-]*"

@@ -1,4 +1,5 @@
 ---
 type: HTTP
 matchers:
-  host_regex: somenonexistinghost
+- host_regex: somenonexistinghost
+
