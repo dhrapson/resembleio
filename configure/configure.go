@@ -17,24 +17,33 @@ package configure
 
 import (
 	"errors"
-	// "strings"
+	"strings"
+	"gopkg.in/yaml.v2"
 )
 
 func ConfigureService(configYaml string) (s ServiceType, err error) {
-	var resembleConfig ResembleConfig
 	if len(configYaml) == 0 {
 		return newApiOnlyServiceType(), err
 	}
-	err = resembleConfig.Parse([]byte(configYaml))
-	if err != nil {
-		return s, err
-	}
-	if resembleConfig.TypeName == "REST_HTTP" {
+
+	if strings.Contains(configYaml, "REST_HTTP") {
 		s = newRestServiceType()
-	} else if resembleConfig.TypeName == "HTTP" {
+	} else if strings.Contains(configYaml, "HTTP") {
+		var resembleConfig ResembleConfig
+		resembleConfig, err = ReadHttpConfiguration(configYaml)
 		s = newHttpServiceType(resembleConfig)
 	} else {
-		err = errors.New("Invalid config: `type`" + resembleConfig.TypeName)
+		err = errors.New("Invalid config: `type`")
 	}
 	return s, err
+}
+
+func ReadHttpConfiguration(configYaml string) (resembleConfig ResembleConfig, err error)   {
+	resembleConfig = ResembleConfig{}
+
+  err = yaml.Unmarshal([]byte(configYaml), &resembleConfig)
+  if err != nil {
+  	return resembleConfig,  errors.New("Error reading YAML text: "+ err.Error())
+  }
+	return resembleConfig, err
 }
