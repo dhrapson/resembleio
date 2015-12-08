@@ -16,6 +16,7 @@
 package configure
 
 import (
+	"log"
 	"io"
 	"net/http"
 )
@@ -26,7 +27,11 @@ type HttpServiceType struct {
 }
 
 func newHttpServiceType(config ResembleConfig) HttpServiceType {
-	return HttpServiceType{name: "HTTP", matchers: config.Matchers}
+	matchers, err := config.createServiceFromConfig()
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	return HttpServiceType{name: "HTTP", matchers: matchers}
 }
 
 func (s HttpServiceType) Name() string {

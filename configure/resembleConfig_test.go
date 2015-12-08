@@ -19,133 +19,69 @@ import (
 	. "github.com/dhrapson/resembleio/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"io/ioutil"
-	"regexp"
 )
 
 var _ = Describe("ResembleConfig", func() {
 
 	var (
-		configData []byte
-		err        error
-		config     ResembleConfig
-		filename   string
+	  verbRegex   string
+		hostRegex   string
+		pathRegex   string
+		queryParams [][]string
+		matcher HttpMatcher
+		matcherConfig HttpRequestMatcherConfig
+		err     error
 	)
 
-	JustBeforeEach(func() {
-		configData, err = ioutil.ReadFile(filename)
-	})
+	Describe("creating a new HttpRequestMatcher", func() {
 
-	Describe("reading an invalid config yaml", func() {
-
-		Context("when it contains garbage", func() {
-
-			BeforeEach(func() {
-				filename = "fixtures/invalid_config.yml"
-			})
-
-			It("should raise a worthy error", func() {
-				err = config.Parse(configData)
-				Expect(err).To(HaveOccurred())
-				matched, matching_err := regexp.MatchString("Error reading YAML text", err.Error())
-				Expect(matching_err).NotTo(HaveOccurred())
-				Expect(matched).To(BeTrue())
-			})
+		JustBeforeEach(func() {
+			queryParamConfigs := []KeyValuesHttpMatcherConfig{}
+			for _, queryParam := range queryParams {
+				queryParamConfigs = 	append(queryParamConfigs, KeyValuesHttpMatcherConfig{queryParam[0], queryParam[1]})
+			}
+			matcherConfig = HttpRequestMatcherConfig{"name", verbRegex, hostRegex, pathRegex, queryParamConfigs}
 		})
 
-		Context("when it contains no value for type", func() {
+		Context("when no regexs are provided", func() {
 
-			BeforeEach(func() {
-				filename = "fixtures/missing_type_config.yml"
-			})
-
-			It("should raise an error", func() {
-				err = config.Parse(configData)
-				Expect(err).To(HaveOccurred())
-			})
-		})
-	})
-
-	Describe("reading a valid config yaml", func() {
-
-		Context("when it contains a minimal HTTP type", func() {
-
-			BeforeEach(func() {
-				filename = "fixtures/http_resemble.yml"
-			})
-
-			It("should return a configuration", func() {
-				err = config.Parse(configData)
+			It("should not throw an error", func() {
+				matcher, err = matcherConfig.NewMatcher()
 				Expect(err).NotTo(HaveOccurred())
-				Expect(config.TypeName).To(Equal("HTTP"))
 			})
 		})
 
-		Context("when it contains a partial HTTP type without matchers", func() {
+		Context("when all valid regexs are provided", func() {
 
 			BeforeEach(func() {
-				filename = "fixtures/http_no_matchers_resemble.yml"
+				verbRegex = "abc"
+				hostRegex = "123"
+				pathRegex   = "def"
+				queryParams = [][]string{{"name1","value1"}, {"name2","value2"}}
 			})
 
-			It("should return a configuration", func() {
-				err = config.Parse(configData)
+			It("should not throw an error", func() {
+				matcher, err = matcherConfig.NewMatcher()
 				Expect(err).NotTo(HaveOccurred())
-				Expect(config.TypeName).To(Equal("HTTP"))
 			})
 		})
 
-		Context("when it contains a partial HTTP type without query params", func() {
+		Context("when an invalid regex is provided", func() {
 
 			BeforeEach(func() {
-				filename = "fixtures/http_no_query_params_resemble.yml"
+				verbRegex = "abc"
+				hostRegex = `^abc++$`
+				pathRegex   = "def"
+				queryParams = [][]string{{"name1","value1"}, {"name2","value2"}}
 			})
 
-			It("should return a configuration", func() {
-				err = config.Parse(configData)
-				Expect(err).NotTo(HaveOccurred())
-				Expect(config.TypeName).To(Equal("HTTP"))
-				pathMatcher, _ := NewUrlPathHttpMatcher("/test")
-				Expect(config.Matchers[0]).To(Equal(pathMatcher))
-				verbMatcher, _ := NewVerbHttpMatcher("GET|POST")
-				Expect(config.Matchers[1]).To(Equal(verbMatcher))
-				hostMatcher, _ := NewHostHttpMatcher("localhost")
-				Expect(config.Matchers[2]).To(Equal(hostMatcher))
-			})
-		})
-
-		Context("when it contains an HTTP type corrupt query params", func() {
-
-			BeforeEach(func() {
-				filename = "fixtures/http_corrupt_params_resemble.yml"
-			})
-
-			It("should raise an error", func() {
-				err = config.Parse(configData)
+			It("should throw an error", func() {
+				matcher, err = matcherConfig.NewMatcher()
 				Expect(err).To(HaveOccurred())
 			})
 		})
 
-		Context("when it contains a full HTTP type", func() {
-
-			BeforeEach(func() {
-				filename = "fixtures/http_full_resemble.yml"
-			})
-
-			It("should return a configuration", func() {
-				err = config.Parse(configData)
-				Expect(err).NotTo(HaveOccurred())
-				Expect(config.TypeName).To(Equal("HTTP"))
-				pathMatcher, _ := NewUrlPathHttpMatcher("/test")
-				Expect(config.Matchers[0]).To(Equal(pathMatcher))
-				verbMatcher, _ := NewVerbHttpMatcher("GET|POST")
-				Expect(config.Matchers[1]).To(Equal(verbMatcher))
-				hostMatcher, _ := NewHostHttpMatcher("localhost")
-				Expect(config.Matchers[2]).To(Equal(hostMatcher))
-				paramMatcher1, _ := NewKeyValuesHttpMatcher("guid", "[a-zA-Z-0-9-]*")
-				Expect(config.Matchers[3]).To(Equal(paramMatcher1))
-				paramMatcher2, _ := NewKeyValuesHttpMatcher("abc", "123")
-				Expect(config.Matchers[4]).To(Equal(paramMatcher2))
-			})
-		})
 	})
+
 })
+

@@ -17,98 +17,89 @@ package configure
 
 import (
 	"errors"
-	"github.com/smallfish/simpleyaml"
+	"regexp"
 )
 
 type ResembleConfig struct {
-	TypeName string `yaml:"type"`
-	Matchers []HttpMatcher
+  TypeName string `yaml:"type"`
+  MatcherConfigs []HttpRequestMatcherConfig `yaml:"matchers"`
 }
 
-func (c *ResembleConfig) Parse(data []byte) error {
-
-	yaml, err := simpleyaml.NewYaml(data)
-	if err != nil {
-		return errors.New("Error reading YAML text")
-	}
-	// Probably a defect in the simpleyaml library, the NewYaml function usage above isnt throwing an error
-	// when we get it to open a totally invalid yaml file. Dealing with that separately here....
-	if _, mapErr := yaml.Map(); mapErr != nil {
-		return errors.New("Error reading YAML text")
-	}
-
-	typeName, err := yaml.Get("type").String()
-	if err != nil {
-		return errors.New("Resemble config: invalid `type`")
-	}
-	c.TypeName = typeName
-
-	c.Matchers, err = getMatchersFromYaml(yaml.Get("matchers"))
-
-	if err != nil {
-		return errors.New("Resemble config: invalid `matchers`")
-	}
-	return nil
+type HttpRequestMatcherConfig struct {
+	Name string
+	VerbRegexString string `yaml:"verb_regex"`
+	HostRegexString string `yaml:"host_regex"`
+	PathRegexString string `yaml:"path_regex"`
+	QueryParams []KeyValuesHttpMatcherConfig `yaml:"query_params"`
 }
 
-func getMatchersFromYaml(matchersYaml *simpleyaml.Yaml) (matchers []HttpMatcher, err error) {
-
-	matchersMap, mapErr := matchersYaml.Map()
-	if mapErr != nil {
-		return matchers, nil
-	}
-	matchers = make([]HttpMatcher, len(matchersMap))
-
-	var count int
-	pathRegex, err := matchersYaml.Get("path_regex").String()
-	if err == nil {
-		matchers[count], err = NewUrlPathHttpMatcher(pathRegex)
-		if err != nil {
-			return matchers, err
-		}
-		count++
-	}
-
-	verbRegex, err := matchersYaml.Get("verb_regex").String()
-	if err == nil {
-		matchers[count], err = NewVerbHttpMatcher(verbRegex)
-		if err != nil {
-			return matchers, err
-		}
-		count++
-	}
-
-	hostRegex, err := matchersYaml.Get("host_regex").String()
-	if err == nil {
-		matchers[count], err = NewHostHttpMatcher(hostRegex)
-		if err != nil {
-			return matchers, err
-		}
-		count++
-	}
-
-	paramsArray, err := getQueryParamsFromYaml(matchersYaml.Get("query_params"))
-
-	allMatchers := append(matchers[0:count], paramsArray...)
-	return allMatchers, err
+type KeyValuesHttpMatcherConfig struct {
+  KeyRegexString string `yaml:"key_regex"`
+  ValueRegexString string `yaml:"value_regex"`
 }
 
-func getQueryParamsFromYaml(paramsYaml *simpleyaml.Yaml) (matchers []HttpMatcher, err error) {
-	paramsArray, err := paramsYaml.Array()
-	params := make([]HttpMatcher, len(paramsArray))
-	for i := 0; i < len(paramsArray); i++ {
-		keyRegex, err := paramsYaml.GetIndex(i).Get("key_regex").String()
-		if err != nil {
-			return params, err
+func (config ResembleConfig) createServiceFromConfig() (matchers []HttpMatcher, err error) {
+	matchers = []HttpMatcher{}
+	for _, matcher := range config.MatcherConfigs {
+		newMatcher, err := matcher.NewMatcher()
+		if  err != nil {
+			return nil, errors.New("Error validating YAML text: " + err.Error())
 		}
-		valueRegex, err := paramsYaml.GetIndex(i).Get("value_regex").String()
-		if err != nil {
-			return params, err
-		}
-		params[i], err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-		if err != nil {
-			return params, err
-		}
+		matchers = append(matchers, newMatcher)
 	}
-	return params, nil
+	return matchers, err
+}
+
+func (m HttpRequestMatcherConfig) NewMatcher() (matcher HttpMatcher, err error) {
+
+	httpMatcher := HttpRequestMatcher{}
+
+	if len(m.HostRegexString) > 0 {
+		myHostMatcher, err := NewHostHttpMatcher(m.HostRegexString)
+		if err != nil {
+			return nil, errors.New("Error validating YAML text: " + err.Error())
+		}
+		httpMatcher.Matchers = append(httpMatcher.Matchers, myHostMatcher)
+	}
+
+	if len(m.VerbRegexString) > 0 {
+		myVerbMatcher, err := NewVerbHttpMatcher(m.VerbRegexString)
+		if err != nil {
+			return nil, errors.New("Error validating YAML text: " + err.Error())
+		}
+		httpMatcher.Matchers = append(httpMatcher.Matchers, myVerbMatcher)
+	}
+
+	if len(m.PathRegexString) > 0 {
+		myPathMatcher, err := NewUrlPathHttpMatcher(m.PathRegexString)
+		if err != nil {
+			return nil, errors.New("Error validating YAML text: "+ err.Error())
+		}
+		httpMatcher.Matchers = append(httpMatcher.Matchers, myPathMatcher)
+	}
+
+	for _, param := range m.QueryParams {
+
+		paramMatcher, err := param.NewMatcher()
+		if err != nil {
+			return nil, errors.New("Error validating YAML text: " + err.Error())
+		}
+
+		httpMatcher.Matchers = append(httpMatcher.Matchers, paramMatcher)
+	}
+	return httpMatcher, err
+}
+
+func (m KeyValuesHttpMatcherConfig) NewMatcher() (matcher QueryParamHttpMatcher, err error) {
+
+	myKeyRegex, err := regexp.Compile(m.KeyRegexString)
+	if err != nil {
+		return QueryParamHttpMatcher{}, errors.New("Error validating YAML text: " + err.Error())
+	}
+	myValueRegex, err := regexp.Compile(m.ValueRegexString)
+	if err != nil {
+		return QueryParamHttpMatcher{}, errors.New("Error validating YAML text: " + err.Error())
+	}
+
+	return QueryParamHttpMatcher{KeyValuesHttpMatcher{myKeyRegex, myValueRegex}}, err
 }
