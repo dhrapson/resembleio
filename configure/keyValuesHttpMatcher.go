@@ -18,40 +18,11 @@ package configure
 import (
 	"net/http"
 	"regexp"
-	"errors"
 )
 
 type KeyValuesHttpMatcher struct {
-  KeyRegexString string `yaml:"key_regex"`
-  ValueRegexString string `yaml:"value_regex"`
-  keyRegex *regexp.Regexp
-  valueRegex *regexp.Regexp
-}
-
-func NewKeyValuesHttpMatcher(keyRegex string, valueRegex string) (matcher KeyValuesHttpMatcher, err error) {
-
-	compiledKeyRegex, err := regexp.Compile(keyRegex)
-	if err != nil {
-		return matcher, err
-	}
-	matcher.keyRegex = compiledKeyRegex
-	compiledValueRegex, err := regexp.Compile(valueRegex)
-	if err == nil {
-		matcher.valueRegex = compiledValueRegex
-	}
-	return matcher, err
-}
-
-func (m *KeyValuesHttpMatcher) acceptValidation() (err error) {
-	m.keyRegex, err = regexp.Compile(m.KeyRegexString)
-	if err != nil {
-		return errors.New("Error validating YAML text: " + err.Error())
-	}
-	m.valueRegex, err = regexp.Compile(m.ValueRegexString)
-	if err != nil {
-		return errors.New("Error validating YAML text: " + err.Error())
-	}
-	return nil
+  KeyRegex *regexp.Regexp
+  ValueRegex *regexp.Regexp
 }
 
 func (m KeyValuesHttpMatcher) Match(req *http.Request) bool {
@@ -60,9 +31,9 @@ func (m KeyValuesHttpMatcher) Match(req *http.Request) bool {
 
 func (m KeyValuesHttpMatcher) MatchKeyValues(params map[string][]string) bool {
 	for key, val := range params {
-		if m.keyRegex.MatchString(key) {
+		if m.KeyRegex.MatchString(key) {
 			for i := 0; i < len(val); i++ {
-				if m.valueRegex.MatchString(val[i]) {
+				if m.ValueRegex.MatchString(val[i]) {
 					return true
 				}
 			}

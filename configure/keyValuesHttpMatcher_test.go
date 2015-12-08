@@ -19,6 +19,7 @@ import (
 	. "github.com/dhrapson/resembleio/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"regexp"
 )
 
 var _ = Describe("KeyValuesHttpMatcher", func() {
@@ -31,11 +32,14 @@ var _ = Describe("KeyValuesHttpMatcher", func() {
 		err         error
 	)
 
+	JustBeforeEach(func() {
+		key, _ := regexp.Compile(keyRegex)
+		value, _ := regexp.Compile(valueRegex)
+		matcher = KeyValuesHttpMatcher{key, value}
+	})
+
 	Describe("when using a valid regex", func() {
 
-		JustBeforeEach(func() {
-			matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-		})
 
 		Context("when given an exactly matching regexp", func() {
 
@@ -108,34 +112,5 @@ var _ = Describe("KeyValuesHttpMatcher", func() {
 			})
 		})
 
-	})
-
-	Describe("when using invalid regexes", func() {
-
-		Context("when the keyRegex is invalid", func() {
-
-			BeforeEach(func() {
-				keyRegex = `^abc++$`
-				valueRegex = `123456`
-			})
-
-			It("should raise an error on creating the matcher", func() {
-				matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-				Expect(err).To(HaveOccurred())
-			})
-		})
-
-		Context("when the valueRegex is invalid", func() {
-
-			BeforeEach(func() {
-				keyRegex = `123456`
-				valueRegex = `^abc++$`
-			})
-
-			It("should raise an error on creating the matcher", func() {
-				matcher, err = NewKeyValuesHttpMatcher(keyRegex, valueRegex)
-				Expect(err).To(HaveOccurred())
-			})
-		})
 	})
 })
