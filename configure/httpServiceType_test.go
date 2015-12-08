@@ -48,7 +48,7 @@ var _ = Describe("HttpServiceType", func() {
 		})
 
 		It("should return unmatched", func() {
-			handle := HttpEndpoint(matchers)
+			handle := HandleHttp(matchers)
 			req, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
 			handle.ServeHTTP(w, req)
@@ -63,7 +63,7 @@ var _ = Describe("HttpServiceType", func() {
 		})
 
 		It("should return unmatched", func() {
-			handle := HttpEndpoint(matchers)
+			handle := HandleHttp(matchers)
 			req, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
 			handle.ServeHTTP(w, req)
@@ -78,7 +78,7 @@ var _ = Describe("HttpServiceType", func() {
 		})
 
 		It("should return unmatched", func() {
-			handle := HttpEndpoint(matchers)
+			handle := HandleHttp(matchers)
 			req, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
 			handle.ServeHTTP(w, req)

@@ -39,10 +39,10 @@ func (s HttpServiceType) Serve() {
 
 func (s HttpServiceType) Configure() {
 	createApiEndpoint()
-	http.HandleFunc("/", HttpEndpoint(s.matchers))
+	http.HandleFunc("/", HandleHttp(s.matchers))
 }
 
-func HttpEndpoint(matchers []HttpMatcher) http.HandlerFunc {
+func HandleHttp(matchers []HttpMatcher) http.HandlerFunc {
 
 	return func(res http.ResponseWriter, req *http.Request) {
 		if matchHttpRequest(matchers, req) {
