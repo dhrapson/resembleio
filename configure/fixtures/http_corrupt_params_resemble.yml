@@ -1,8 +1,9 @@
 ---
 type: HTTP
 matchers:
+- name: my_matcher
   path_regex: /test
   verb_regex: GET|POST
   host_regex: localhost
   query_params:
-    - key_regex: guid
+  - key_regex: id
