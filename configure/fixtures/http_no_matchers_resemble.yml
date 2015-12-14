@@ -1,3 +1,5 @@
 ---
 type: HTTP
-matchers:
+endpoints:
+- name: my_http_endpoint
+  matchers:
