@@ -10,3 +10,7 @@ matchers:
     value_regex: "[a-zA-Z-0-9-]*"
   - key_regex: abc
     value_regex: "123"
+- name: my_other_matcher
+  path_regex: /testagain
+  verb_regex: PUT
+  host_regex: somehost
