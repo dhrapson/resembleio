@@ -22,7 +22,12 @@ import (
 
 type ResembleConfig struct {
   TypeName string `yaml:"type"`
-  MatcherConfigs []HttpRequestMatcherConfig `yaml:"matchers"`
+  EndpointConfigs []HttpEndpointConfig `yaml:"endpoints"`
+}
+
+type HttpEndpointConfig struct {
+	Name string
+	MatcherConfigs []HttpRequestMatcherConfig `yaml:"matchers"`
 }
 
 type HttpRequestMatcherConfig struct {
@@ -38,7 +43,20 @@ type KeyValuesHttpMatcherConfig struct {
   ValueRegexString string `yaml:"value_regex"`
 }
 
-func (config ResembleConfig) createServiceFromConfig() (matchers []HttpMatcher, err error) {
+func (config ResembleConfig) createServiceFromConfig() (endpoints []HttpEndpoint, err error) {
+	endpoints = []HttpEndpoint{}
+	for _, endpoint := range config.EndpointConfigs {
+		newEndpoint := NamedHttpEndpoint{endpoint.Name, []HttpMatcher{}}
+		newEndpoint.Matchers, err = endpoint.createMatchersFromConfig()
+		if  err != nil {
+			return nil, errors.New("Error validating YAML text: " + err.Error())
+		}
+		endpoints = append(endpoints, newEndpoint)
+	}
+	return endpoints, err
+}
+
+func (config HttpEndpointConfig) createMatchersFromConfig() (matchers []HttpMatcher, err error) {
 	matchers = []HttpMatcher{}
 	for _, matcher := range config.MatcherConfigs {
 		newMatcher, err := matcher.NewMatcher()
