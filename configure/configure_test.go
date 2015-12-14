@@ -128,7 +128,7 @@ var _ = Describe("Configure", func() {
 					config, err = ReadHttpConfiguration(configData)
 					Expect(err).NotTo(HaveOccurred())
 					Expect(config.TypeName).To(Equal("HTTP"))
-					httpRequestMatcher0 := config.MatcherConfigs[0]
+					httpRequestMatcher0 := config.EndpointConfigs[0].MatcherConfigs[0]
 					Expect(httpRequestMatcher0.PathRegexString).To(Equal("/test"))
 					Expect(httpRequestMatcher0.VerbRegexString).To(Equal("GET|POST"))
 					Expect(httpRequestMatcher0.HostRegexString).To(Equal("localhost"))
@@ -136,7 +136,7 @@ var _ = Describe("Configure", func() {
 					Expect(httpRequestMatcher0.QueryParams[0].ValueRegexString).To(Equal("[a-zA-Z-0-9-]*"))
 					Expect(httpRequestMatcher0.QueryParams[1].KeyRegexString).To(Equal("abc"))
 					Expect(httpRequestMatcher0.QueryParams[1].ValueRegexString).To(Equal("123"))
-					httpRequestMatcher1 := config.MatcherConfigs[1]
+					httpRequestMatcher1 := config.EndpointConfigs[0].MatcherConfigs[1]
 					Expect(httpRequestMatcher1.PathRegexString).To(Equal("/testagain"))
 					Expect(httpRequestMatcher1.VerbRegexString).To(Equal("PUT"))
 					Expect(httpRequestMatcher1.HostRegexString).To(Equal("somehost"))

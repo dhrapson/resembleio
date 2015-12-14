@@ -22,6 +22,18 @@ import (
 	"net/http"
 )
 
+type NegativeHttpMatcher struct{}
+
+func (dummy NegativeHttpMatcher) Match(req *http.Request) bool {
+	return false
+}
+
+type PositiveHttpMatcher struct{}
+
+func (dummy PositiveHttpMatcher) Match(req *http.Request) bool {
+	return true
+}
+
 var _ = Describe("HttpRequestMatcher", func() {
 
 	var _ = Describe("#Match", func() {
