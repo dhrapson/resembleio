@@ -1,5 +1,6 @@
 ---
 type: HTTP
-matchers:
-- host_regex: somenonexistinghost
-
+endpoints:
+- name: my_http_endpoint
+  matchers:
+  - host_regex: somenonexistinghost

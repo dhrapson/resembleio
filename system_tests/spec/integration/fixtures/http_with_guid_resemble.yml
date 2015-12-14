@@ -1,4 +1,6 @@
 ---
 type: HTTP
-matchers:
-- path_regex: /test/([a-zA-Z-0-9-]*)
+endpoints:
+- name: my_http_endpoint
+  matchers:
+  - path_regex: /test/([a-zA-Z-0-9-]*)
