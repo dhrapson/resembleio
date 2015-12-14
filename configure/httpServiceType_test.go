@@ -24,31 +24,31 @@ import (
 	"net/http/httptest"
 )
 
-type NegativeHttpMatcher struct{}
+type NegativeHttpEndpoint struct{}
 
-func (dummy NegativeHttpMatcher) Match(req *http.Request) bool {
+func (dummy NegativeHttpEndpoint) Match(req *http.Request) bool {
 	return false
 }
 
-type PositiveHttpMatcher struct{}
+type PositiveHttpEndpoint struct{}
 
-func (dummy PositiveHttpMatcher) Match(req *http.Request) bool {
+func (dummy PositiveHttpEndpoint) Match(req *http.Request) bool {
 	return true
 }
 
 var _ = Describe("HttpServiceType", func() {
 
 	var (
-		matchers []HttpMatcher
+		endpoints []HttpEndpoint
 	)
 
-	Context("when no matchers are provided", func() {
+	Context("when no endpoints are provided", func() {
 		BeforeEach(func() {
-			matchers = []HttpMatcher{}
+			endpoints = []HttpEndpoint{}
 		})
 
 		It("should return unmatched", func() {
-			handle := HandleHttp(matchers)
+			handle := HandleHttp(endpoints)
 			req, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
 			handle.ServeHTTP(w, req)
@@ -59,11 +59,11 @@ var _ = Describe("HttpServiceType", func() {
 	Context("when the request is not matched", func() {
 
 		BeforeEach(func() {
-			matchers = []HttpMatcher{NegativeHttpMatcher{}}
+			endpoints = []HttpEndpoint{NegativeHttpEndpoint{}}
 		})
 
 		It("should return unmatched", func() {
-			handle := HandleHttp(matchers)
+			handle := HandleHttp(endpoints)
 			req, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
 			handle.ServeHTTP(w, req)
@@ -74,11 +74,11 @@ var _ = Describe("HttpServiceType", func() {
 	Context("when the request is matched", func() {
 
 		BeforeEach(func() {
-			matchers = []HttpMatcher{PositiveHttpMatcher{}}
+			endpoints = []HttpEndpoint{PositiveHttpEndpoint{}}
 		})
 
 		It("should return unmatched", func() {
-			handle := HandleHttp(matchers)
+			handle := HandleHttp(endpoints)
 			req, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
 			handle.ServeHTTP(w, req)

@@ -23,15 +23,15 @@ import (
 
 type HttpServiceType struct {
 	name     string
-	matchers []HttpMatcher
+	endpoints []HttpEndpoint
 }
 
 func newHttpServiceType(config ResembleConfig) HttpServiceType {
-	matchers, err := config.createServiceFromConfig()
+	endpoints, err := config.createServiceFromConfig()
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	return HttpServiceType{name: "HTTP", matchers: matchers}
+	return HttpServiceType{name: "HTTP", endpoints: endpoints}
 }
 
 func (s HttpServiceType) Name() string {
@@ -44,13 +44,13 @@ func (s HttpServiceType) Serve() {
 
 func (s HttpServiceType) Configure() {
 	createApiEndpoint()
-	http.HandleFunc("/", HandleHttp(s.matchers))
+	http.HandleFunc("/", HandleHttp(s.endpoints))
 }
 
-func HandleHttp(matchers []HttpMatcher) http.HandlerFunc {
+func HandleHttp(endpoints []HttpEndpoint) http.HandlerFunc {
 
 	return func(res http.ResponseWriter, req *http.Request) {
-		if matchHttpRequest(matchers, req) {
+		if matchHttpRequest(endpoints, req) {
 			res.Header().Set(
 				"Content-Type",
 				"text/html",
@@ -65,12 +65,12 @@ func HandleHttp(matchers []HttpMatcher) http.HandlerFunc {
 	}
 }
 
-func matchHttpRequest(matchers []HttpMatcher, req *http.Request) bool {
-	if len(matchers) == 0 {
+func matchHttpRequest(endpoints []HttpEndpoint, req *http.Request) bool {
+	if len(endpoints) == 0 {
 		return false
 	}
-	for i := 0; i < len(matchers); i++ {
-		if matchers[i].Match(req) {
+	for i := 0; i < len(endpoints); i++ {
+		if endpoints[i].Match(req) {
 			return true
 		} else {
 			continue
