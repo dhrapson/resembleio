@@ -28,6 +28,7 @@ var _ = Describe("ResembleConfig", func() {
 		hostRegex   string
 		pathRegex   string
 		queryParams [][]string
+		headers [][]string
 		matcher HttpMatcher
 		matcherConfig HttpRequestMatcherConfig
 		err     error
@@ -40,7 +41,11 @@ var _ = Describe("ResembleConfig", func() {
 			for _, queryParam := range queryParams {
 				queryParamConfigs = 	append(queryParamConfigs, KeyValuesHttpMatcherConfig{queryParam[0], queryParam[1]})
 			}
-			matcherConfig = HttpRequestMatcherConfig{"name", verbRegex, hostRegex, pathRegex, queryParamConfigs}
+			headerConfigs := []KeyValuesHttpMatcherConfig{}
+			for _, header := range headers {
+				headerConfigs = append(headerConfigs, KeyValuesHttpMatcherConfig{header[0], header[1]})
+			}
+			matcherConfig = HttpRequestMatcherConfig{"name", verbRegex, hostRegex, pathRegex, queryParamConfigs, headerConfigs}
 		})
 
 		Context("when no regexs are provided", func() {
@@ -58,6 +63,7 @@ var _ = Describe("ResembleConfig", func() {
 				hostRegex = "123"
 				pathRegex   = "def"
 				queryParams = [][]string{{"name1","value1"}, {"name2","value2"}}
+				headers = [][]string{{"hname1","hvalue1"}, {"hname2","hvalue2"}}
 			})
 
 			It("should not throw an error", func() {
@@ -73,6 +79,7 @@ var _ = Describe("ResembleConfig", func() {
 				hostRegex = `^abc++$`
 				pathRegex   = "def"
 				queryParams = [][]string{{"name1","value1"}, {"name2","value2"}}
+				headers = [][]string{{"hname1","hvalue1"}, {"hname2","hvalue2"}}
 			})
 
 			It("should throw an error", func() {

@@ -36,6 +36,7 @@ type HttpRequestMatcherConfig struct {
 	HostRegexString string `yaml:"host_regex"`
 	PathRegexString string `yaml:"path_regex"`
 	QueryParams []KeyValuesHttpMatcherConfig `yaml:"query_params"`
+	Headers []KeyValuesHttpMatcherConfig `yaml:"headers"`
 }
 
 type KeyValuesHttpMatcherConfig struct {

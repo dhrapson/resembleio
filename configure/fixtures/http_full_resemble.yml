@@ -12,6 +12,9 @@ endpoints:
       value_regex: "[a-zA-Z-0-9-]*"
     - key_regex: abc
       value_regex: "123"
+    headers:
+    - key_regex: Accept
+      value_regex: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
   - name: my_other_matcher
     path_regex: /testagain
     verb_regex: PUT

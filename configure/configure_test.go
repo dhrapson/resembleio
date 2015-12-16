@@ -136,6 +136,8 @@ var _ = Describe("Configure", func() {
 					Expect(httpRequestMatcher0.QueryParams[0].ValueRegexString).To(Equal("[a-zA-Z-0-9-]*"))
 					Expect(httpRequestMatcher0.QueryParams[1].KeyRegexString).To(Equal("abc"))
 					Expect(httpRequestMatcher0.QueryParams[1].ValueRegexString).To(Equal("123"))
+					Expect(httpRequestMatcher0.Headers[0].KeyRegexString).To(Equal("Accept"))
+					Expect(httpRequestMatcher0.Headers[0].ValueRegexString).To(Equal("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"))
 					httpRequestMatcher1 := config.EndpointConfigs[0].MatcherConfigs[1]
 					Expect(httpRequestMatcher1.PathRegexString).To(Equal("/testagain"))
 					Expect(httpRequestMatcher1.VerbRegexString).To(Equal("PUT"))
