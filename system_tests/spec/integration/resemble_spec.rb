@@ -161,6 +161,11 @@ describe 'The resemble Server' do
 			response = client.get('/test?id=abc123')
 			expect(response.status).to be 200
 		end
+
+		it 'correctly matches a configured endpoint' do
+			response = client.post('/testagain')
+			expect(response.status).to be 200
+		end
 	end
 
 	context 'when running a config with a non-existing host' do

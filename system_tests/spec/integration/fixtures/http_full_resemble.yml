@@ -12,5 +12,5 @@ endpoints:
       value_regex: abc123 #[a-zA-Z-0-9-]*"
   - name: my_other_matcher
     path_regex: /testagain
-    verb_regex: PUT
-    host_regex: somehost
+    verb_regex: POST
+    host_regex: localhost
