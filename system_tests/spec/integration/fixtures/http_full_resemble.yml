@@ -9,7 +9,7 @@ endpoints:
     host_regex: localhost
     query_params:
     - key_regex: id
-      value_regex: abc123 #[a-zA-Z-0-9-]*"
+      value_regex: "[a-zA-Z-0-9-]*"
   - name: my_other_matcher
     path_regex: /testagain
     verb_regex: POST
