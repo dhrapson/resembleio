@@ -48,6 +48,15 @@ type KeyValuesHttpMatcherConfig struct {
 type HttpResponderConfig struct {
   Name string
   Mode string
+  Content HttpResponderContent
+}
+
+type HttpResponderContent struct {
+  ContentType string `yaml:"type"`
+  SourceDir string `yaml:"source_dir"`
+  TmpDir string `yaml:"tmp_dir"`
+  Script string
+  SourceFile string `yaml:"source_file"`
 }
 
 func (config ResembleConfig) createServiceFromConfig() (endpoints []HttpEndpoint, err error) {

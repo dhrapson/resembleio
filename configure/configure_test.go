@@ -145,6 +145,19 @@ var _ = Describe("Configure", func() {
 					httpResponder0 := config.EndpointConfigs[0].ResponderConfigs[0]
 					Expect(httpResponder0.Name).To(Equal("optional_name"))
 					Expect(httpResponder0.Mode).To(Equal("normal"))
+					Expect(httpResponder0.Content.ContentType).To(Equal("body"))
+					Expect(httpResponder0.Content.SourceDir).To(Equal("dir/full/of/happy/files"))
+					Expect(httpResponder0.Content.TmpDir).To(Equal("/tmp"))
+					httpResponder1 := config.EndpointConfigs[0].ResponderConfigs[1]
+					Expect(httpResponder1.Name).To(Equal("some_other_name"))
+					Expect(httpResponder1.Mode).To(Equal("abnormal"))
+					Expect(httpResponder1.Content.ContentType).To(Equal("body"))
+					Expect(httpResponder1.Content.Script).To(Equal("path/to/script/serving/body/file.py"))
+					httpResponder2 := config.EndpointConfigs[0].ResponderConfigs[2]
+					Expect(httpResponder2.Name).To(Equal("last_name"))
+					Expect(httpResponder2.Mode).To(Equal("broken"))
+					Expect(httpResponder2.Content.ContentType).To(Equal("body"))
+					Expect(httpResponder2.Content.SourceFile).To(Equal("path/to/broken/body/file.json"))
 				})
 			})
 		})

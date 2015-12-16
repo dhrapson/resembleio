@@ -22,3 +22,17 @@ endpoints:
   responders:
   - name: optional_name
     mode: normal
+    content:
+      type: body
+      source_dir: dir/full/of/happy/files
+      tmp_dir: /tmp
+  - name: some_other_name
+    mode: abnormal
+    content:
+      type: body
+      script: path/to/script/serving/body/file.py
+  - name: last_name
+    mode: broken
+    content:
+      type: body
+      source_file: path/to/broken/body/file.json
