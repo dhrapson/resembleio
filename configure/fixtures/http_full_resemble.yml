@@ -19,3 +19,6 @@ endpoints:
     path_regex: /testagain
     verb_regex: PUT
     host_regex: somehost
+  responders:
+  - name: optional_name
+    mode: normal

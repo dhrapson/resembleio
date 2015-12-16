@@ -142,6 +142,9 @@ var _ = Describe("Configure", func() {
 					Expect(httpRequestMatcher1.PathRegexString).To(Equal("/testagain"))
 					Expect(httpRequestMatcher1.VerbRegexString).To(Equal("PUT"))
 					Expect(httpRequestMatcher1.HostRegexString).To(Equal("somehost"))
+					httpResponder0 := config.EndpointConfigs[0].ResponderConfigs[0]
+					Expect(httpResponder0.Name).To(Equal("optional_name"))
+					Expect(httpResponder0.Mode).To(Equal("normal"))
 				})
 			})
 		})

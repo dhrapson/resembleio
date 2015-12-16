@@ -28,6 +28,7 @@ type ResembleConfig struct {
 type HttpEndpointConfig struct {
 	Name string
 	MatcherConfigs []HttpRequestMatcherConfig `yaml:"matchers"`
+	ResponderConfigs []HttpResponderConfig `yaml:"responders"`
 }
 
 type HttpRequestMatcherConfig struct {
@@ -42,6 +43,11 @@ type HttpRequestMatcherConfig struct {
 type KeyValuesHttpMatcherConfig struct {
   KeyRegexString string `yaml:"key_regex"`
   ValueRegexString string `yaml:"value_regex"`
+}
+
+type HttpResponderConfig struct {
+  Name string
+  Mode string
 }
 
 func (config ResembleConfig) createServiceFromConfig() (endpoints []HttpEndpoint, err error) {
