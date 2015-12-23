@@ -158,6 +158,8 @@ var _ = Describe("Configure", func() {
 					Expect(httpResponder2.Mode).To(Equal("broken"))
 					Expect(httpResponder2.Content.ContentType).To(Equal("body"))
 					Expect(httpResponder2.Content.SourceFile).To(Equal("path/to/broken/body/file.json"))
+					Expect(config.ModeConfigs[0].Name).To(Equal("mode1"))
+					Expect(config.ModeConfigs[1].Name).To(Equal("mode2"))
 				})
 			})
 		})

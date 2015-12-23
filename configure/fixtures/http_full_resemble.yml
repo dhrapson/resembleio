@@ -36,3 +36,6 @@ endpoints:
     content:
       type: body
       source_file: path/to/broken/body/file.json
+modes:
+- name: mode1
+- name: mode2

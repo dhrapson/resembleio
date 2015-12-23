@@ -23,6 +23,11 @@ import (
 type ResembleConfig struct {
   TypeName string `yaml:"type"`
   EndpointConfigs []HttpEndpointConfig `yaml:"endpoints"`
+  ModeConfigs []ModeConfig `yaml:"modes"`
+}
+
+type ModeConfig struct {
+	Name string
 }
 
 type HttpEndpointConfig struct {
