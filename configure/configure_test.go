@@ -159,6 +159,12 @@ var _ = Describe("Configure", func() {
 					Expect(httpResponder2.Content.SourceFile).To(Equal("path/to/broken/body/file.json"))
 					Expect(config.ModeConfigs[0].Name).To(Equal("mode1"))
 					Expect(config.ModeConfigs[1].Name).To(Equal("mode2"))
+
+					endpoint1 := config.EndpointConfigs[1]
+					Expect(endpoint1.Name).To(Equal("my_second_http_endpoint"))
+					httpRequestMatcher2 := endpoint1.MatcherConfigs[0]
+					Expect(httpRequestMatcher2.VerbRegexString).To(Equal("GET|POST|PUT"))
+					Expect(httpRequestMatcher2.PathRegexString).To(Equal("/second_endpoint"))
 				})
 			})
 		})
