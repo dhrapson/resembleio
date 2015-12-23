@@ -162,7 +162,7 @@ describe 'The resemble Server' do
 			expect(response.status).to be 200
 		end
 
-		it 'correctly matches a configured endpoint' do
+		it 'correctly uses a second matcher on the same endpoint' do
 			response = client.post('/testagain')
 			expect(response.status).to be 200
 		end
