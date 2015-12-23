@@ -16,11 +16,13 @@
 package configure
 
 import (
+	"io"
 	"net/http"
 )
 
 type HttpEndpoint interface {
 	Match(req *http.Request) bool
+	Respond(res http.ResponseWriter, req *http.Request)
 }
 
 type NamedHttpEndpoint struct {
@@ -40,4 +42,15 @@ func (e NamedHttpEndpoint) Match(req *http.Request) bool {
 		}
 	}
 	return false
+}
+
+func (e NamedHttpEndpoint) Respond(res http.ResponseWriter, req *http.Request)  {
+	res.Header().Set(
+		"Content-Type",
+		"text/html",
+	)
+	io.WriteString(
+		res,
+		"HTTP endpoint - matched",
+	)
 }

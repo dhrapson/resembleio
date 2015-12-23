@@ -29,12 +29,14 @@ type NegativeHttpEndpoint struct{}
 func (dummy NegativeHttpEndpoint) Match(req *http.Request) bool {
 	return false
 }
+func (dummy NegativeHttpEndpoint) Respond(res http.ResponseWriter, req *http.Request) {}
 
 type PositiveHttpEndpoint struct{}
 
 func (dummy PositiveHttpEndpoint) Match(req *http.Request) bool {
 	return true
 }
+func (dummy PositiveHttpEndpoint) Respond(res http.ResponseWriter, req *http.Request) {}
 
 var _ = Describe("HttpServiceType", func() {
 

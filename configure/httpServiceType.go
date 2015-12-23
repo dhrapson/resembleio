@@ -16,7 +16,6 @@
 package configure
 
 import (
-	"io"
 	"log"
 	"net/http"
 )
@@ -50,31 +49,24 @@ func (s HttpServiceType) Configure() {
 func HandleHttp(endpoints []HttpEndpoint) http.HandlerFunc {
 
 	return func(res http.ResponseWriter, req *http.Request) {
-		if matchHttpRequest(endpoints, req) {
-			res.Header().Set(
-				"Content-Type",
-				"text/html",
-			)
-			io.WriteString(
-				res,
-				"HTTP endpoint - matched",
-			)
+		if matched, endpoint := matchHttpRequest(endpoints, req); matched {
+			endpoint.Respond(res, req)
 		} else {
 			http.NotFound(res, req)
 		}
 	}
 }
 
-func matchHttpRequest(endpoints []HttpEndpoint, req *http.Request) bool {
+func matchHttpRequest(endpoints []HttpEndpoint, req *http.Request) (matched bool, endpoint HttpEndpoint) {
 	if len(endpoints) == 0 {
-		return false
+		return false, NamedHttpEndpoint{}
 	}
 	for i := 0; i < len(endpoints); i++ {
 		if endpoints[i].Match(req) {
-			return true
+			return true, endpoints[i]
 		} else {
 			continue
 		}
 	}
-	return false
+	return false, NamedHttpEndpoint{}
 }
