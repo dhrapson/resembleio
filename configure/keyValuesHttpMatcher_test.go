@@ -40,7 +40,6 @@ var _ = Describe("KeyValuesHttpMatcher", func() {
 
 	Describe("when using a valid regex", func() {
 
-
 		Context("when given an exactly matching regexp", func() {
 
 			BeforeEach(func() {

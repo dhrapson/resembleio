@@ -25,14 +25,15 @@ type MockServiceType struct {
 	served bool
 }
 
-func (m *MockServiceType) Configure(){}
+func (m *MockServiceType) Configure() {}
 
 func (m *MockServiceType) Name() string {
 	return "mock"
 }
-func (m *MockServiceType) Serve(){
+func (m *MockServiceType) Serve() {
 	m.served = true
 }
+
 var _ = Describe("Serve", func() {
 
 	var (

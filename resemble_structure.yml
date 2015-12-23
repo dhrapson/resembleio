@@ -51,6 +51,6 @@ endpoint:
 			basic/oauth...
 		SSL_certs..
 modes:
-stats:
-performance:
+# stats:
+# performance:
 

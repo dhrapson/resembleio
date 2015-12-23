@@ -21,9 +21,9 @@ import (
 )
 
 type ResembleConfig struct {
-  TypeName string `yaml:"type"`
-  EndpointConfigs []HttpEndpointConfig `yaml:"endpoints"`
-  ModeConfigs []ModeConfig `yaml:"modes"`
+	TypeName        string               `yaml:"type"`
+	EndpointConfigs []HttpEndpointConfig `yaml:"endpoints"`
+	ModeConfigs     []ModeConfig         `yaml:"modes"`
 }
 
 type ModeConfig struct {
@@ -31,37 +31,37 @@ type ModeConfig struct {
 }
 
 type HttpEndpointConfig struct {
-	Name string
-	MatcherConfigs []HttpRequestMatcherConfig `yaml:"matchers"`
-	ResponderConfigs []HttpResponderConfig `yaml:"responders"`
+	Name             string
+	MatcherConfigs   []HttpRequestMatcherConfig `yaml:"matchers"`
+	ResponderConfigs []HttpResponderConfig      `yaml:"responders"`
 }
 
 type HttpRequestMatcherConfig struct {
-	Name string
-	VerbRegexString string `yaml:"verb_regex"`
-	HostRegexString string `yaml:"host_regex"`
-	PathRegexString string `yaml:"path_regex"`
-	QueryParams []KeyValuesHttpMatcherConfig `yaml:"query_params"`
-	Headers []KeyValuesHttpMatcherConfig `yaml:"headers"`
+	Name            string
+	VerbRegexString string                       `yaml:"verb_regex"`
+	HostRegexString string                       `yaml:"host_regex"`
+	PathRegexString string                       `yaml:"path_regex"`
+	QueryParams     []KeyValuesHttpMatcherConfig `yaml:"query_params"`
+	Headers         []KeyValuesHttpMatcherConfig `yaml:"headers"`
 }
 
 type KeyValuesHttpMatcherConfig struct {
-  KeyRegexString string `yaml:"key_regex"`
-  ValueRegexString string `yaml:"value_regex"`
+	KeyRegexString   string `yaml:"key_regex"`
+	ValueRegexString string `yaml:"value_regex"`
 }
 
 type HttpResponderConfig struct {
-  Name string
-  Mode string
-  Content HttpResponderContent
+	Name    string
+	Mode    string
+	Content HttpResponderContent
 }
 
 type HttpResponderContent struct {
-  ContentType string `yaml:"type"`
-  SourceDir string `yaml:"source_dir"`
-  TmpDir string `yaml:"tmp_dir"`
-  Script string
-  SourceFile string `yaml:"source_file"`
+	ContentType string `yaml:"type"`
+	SourceDir   string `yaml:"source_dir"`
+	TmpDir      string `yaml:"tmp_dir"`
+	Script      string
+	SourceFile  string `yaml:"source_file"`
 }
 
 func (config ResembleConfig) createServiceFromConfig() (endpoints []HttpEndpoint, err error) {
@@ -69,7 +69,7 @@ func (config ResembleConfig) createServiceFromConfig() (endpoints []HttpEndpoint
 	for _, endpoint := range config.EndpointConfigs {
 		newEndpoint := NamedHttpEndpoint{endpoint.Name, []HttpMatcher{}}
 		newEndpoint.Matchers, err = endpoint.createMatchersFromConfig()
-		if  err != nil {
+		if err != nil {
 			return nil, errors.New("Error validating YAML text: " + err.Error())
 		}
 		endpoints = append(endpoints, newEndpoint)
@@ -81,7 +81,7 @@ func (config HttpEndpointConfig) createMatchersFromConfig() (matchers []HttpMatc
 	matchers = []HttpMatcher{}
 	for _, matcher := range config.MatcherConfigs {
 		newMatcher, err := matcher.NewMatcher()
-		if  err != nil {
+		if err != nil {
 			return nil, errors.New("Error validating YAML text: " + err.Error())
 		}
 		matchers = append(matchers, newMatcher)
@@ -112,7 +112,7 @@ func (m HttpRequestMatcherConfig) NewMatcher() (matcher HttpMatcher, err error) 
 	if len(m.PathRegexString) > 0 {
 		myPathMatcher, err := NewUrlPathHttpMatcher(m.PathRegexString)
 		if err != nil {
-			return nil, errors.New("Error validating YAML text: "+ err.Error())
+			return nil, errors.New("Error validating YAML text: " + err.Error())
 		}
 		httpMatcher.Matchers = append(httpMatcher.Matchers, myPathMatcher)
 	}

@@ -20,8 +20,8 @@ import (
 )
 
 type HttpRequestMatcher struct {
-	Name string
-	Matchers [] HttpMatcher
+	Name     string
+	Matchers []HttpMatcher
 }
 
 func (m HttpRequestMatcher) Match(req *http.Request) bool {
@@ -35,4 +35,3 @@ func (m HttpRequestMatcher) Match(req *http.Request) bool {
 	}
 	return somethingMatched
 }
-

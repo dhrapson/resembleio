@@ -39,10 +39,10 @@ var _ = Describe("HttpRequestMatcher", func() {
 	var _ = Describe("#Match", func() {
 
 		var (
-		  matchers []HttpMatcher
-			matcher HttpRequestMatcher
-			req *http.Request
-			err     error
+			matchers []HttpMatcher
+			matcher  HttpRequestMatcher
+			req      *http.Request
+			err      error
 		)
 
 		JustBeforeEach(func() {
@@ -94,4 +94,3 @@ var _ = Describe("HttpRequestMatcher", func() {
 		})
 	})
 })
-

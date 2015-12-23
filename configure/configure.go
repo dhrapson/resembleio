@@ -17,8 +17,8 @@ package configure
 
 import (
 	"errors"
-	"strings"
 	"gopkg.in/yaml.v2"
+	"strings"
 )
 
 func ConfigureService(configYaml string) (s ServiceType, err error) {
@@ -38,12 +38,12 @@ func ConfigureService(configYaml string) (s ServiceType, err error) {
 	return s, err
 }
 
-func ReadHttpConfiguration(configYaml string) (resembleConfig ResembleConfig, err error)   {
+func ReadHttpConfiguration(configYaml string) (resembleConfig ResembleConfig, err error) {
 	resembleConfig = ResembleConfig{}
 
-  err = yaml.Unmarshal([]byte(configYaml), &resembleConfig)
-  if err != nil {
-  	return resembleConfig,  errors.New("Error reading YAML text: "+ err.Error())
-  }
+	err = yaml.Unmarshal([]byte(configYaml), &resembleConfig)
+	if err != nil {
+		return resembleConfig, errors.New("Error reading YAML text: " + err.Error())
+	}
 	return resembleConfig, err
 }

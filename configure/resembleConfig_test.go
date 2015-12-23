@@ -24,14 +24,14 @@ import (
 var _ = Describe("ResembleConfig", func() {
 
 	var (
-	  verbRegex   string
-		hostRegex   string
-		pathRegex   string
-		queryParams [][]string
-		headers [][]string
-		matcher HttpMatcher
+		verbRegex     string
+		hostRegex     string
+		pathRegex     string
+		queryParams   [][]string
+		headers       [][]string
+		matcher       HttpMatcher
 		matcherConfig HttpRequestMatcherConfig
-		err     error
+		err           error
 	)
 
 	Describe("creating a new HttpRequestMatcher", func() {
@@ -39,7 +39,7 @@ var _ = Describe("ResembleConfig", func() {
 		JustBeforeEach(func() {
 			queryParamConfigs := []KeyValuesHttpMatcherConfig{}
 			for _, queryParam := range queryParams {
-				queryParamConfigs = 	append(queryParamConfigs, KeyValuesHttpMatcherConfig{queryParam[0], queryParam[1]})
+				queryParamConfigs = append(queryParamConfigs, KeyValuesHttpMatcherConfig{queryParam[0], queryParam[1]})
 			}
 			headerConfigs := []KeyValuesHttpMatcherConfig{}
 			for _, header := range headers {
@@ -61,9 +61,9 @@ var _ = Describe("ResembleConfig", func() {
 			BeforeEach(func() {
 				verbRegex = "abc"
 				hostRegex = "123"
-				pathRegex   = "def"
-				queryParams = [][]string{{"name1","value1"}, {"name2","value2"}}
-				headers = [][]string{{"hname1","hvalue1"}, {"hname2","hvalue2"}}
+				pathRegex = "def"
+				queryParams = [][]string{{"name1", "value1"}, {"name2", "value2"}}
+				headers = [][]string{{"hname1", "hvalue1"}, {"hname2", "hvalue2"}}
 			})
 
 			It("should not throw an error", func() {
@@ -77,9 +77,9 @@ var _ = Describe("ResembleConfig", func() {
 			BeforeEach(func() {
 				verbRegex = "abc"
 				hostRegex = `^abc++$`
-				pathRegex   = "def"
-				queryParams = [][]string{{"name1","value1"}, {"name2","value2"}}
-				headers = [][]string{{"hname1","hvalue1"}, {"hname2","hvalue2"}}
+				pathRegex = "def"
+				queryParams = [][]string{{"name1", "value1"}, {"name2", "value2"}}
+				headers = [][]string{{"hname1", "hvalue1"}, {"hname2", "hvalue2"}}
 			})
 
 			It("should throw an error", func() {
@@ -91,4 +91,3 @@ var _ = Describe("ResembleConfig", func() {
 	})
 
 })
-

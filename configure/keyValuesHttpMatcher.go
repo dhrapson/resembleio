@@ -21,8 +21,8 @@ import (
 )
 
 type KeyValuesHttpMatcher struct {
-  KeyRegex *regexp.Regexp
-  ValueRegex *regexp.Regexp
+	KeyRegex   *regexp.Regexp
+	ValueRegex *regexp.Regexp
 }
 
 func (m KeyValuesHttpMatcher) Match(req *http.Request) bool {

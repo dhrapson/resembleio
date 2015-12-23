@@ -16,13 +16,13 @@
 package configure
 
 import (
-	"log"
 	"io"
+	"log"
 	"net/http"
 )
 
 type HttpServiceType struct {
-	name     string
+	name      string
 	endpoints []HttpEndpoint
 }
 

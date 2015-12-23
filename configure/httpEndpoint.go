@@ -24,8 +24,8 @@ type HttpEndpoint interface {
 }
 
 type NamedHttpEndpoint struct {
-	Name string
-  Matchers []HttpMatcher
+	Name     string
+	Matchers []HttpMatcher
 }
 
 func (e NamedHttpEndpoint) Match(req *http.Request) bool {

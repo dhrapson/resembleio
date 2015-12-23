@@ -19,18 +19,18 @@ import (
 	. "github.com/dhrapson/resembleio/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"regexp"
 	"net/http"
+	"regexp"
 )
 
 var _ = Describe("QueryParamHttpMatcher", func() {
 
 	var (
-		keyRegex    string
-		valueRegex  string
-		matcher     QueryParamHttpMatcher
-		req *http.Request
-		err         error
+		keyRegex   string
+		valueRegex string
+		matcher    QueryParamHttpMatcher
+		req        *http.Request
+		err        error
 	)
 
 	JustBeforeEach(func() {

@@ -19,8 +19,8 @@ import (
 	. "github.com/dhrapson/resembleio/configure"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"regexp"
 	"io/ioutil"
+	"regexp"
 )
 
 var _ = Describe("Configure", func() {
@@ -116,7 +116,6 @@ var _ = Describe("Configure", func() {
 					Expect(config.TypeName).To(Equal("HTTP"))
 				})
 			})
-
 
 			Context("when it contains a full HTTP type", func() {
 
