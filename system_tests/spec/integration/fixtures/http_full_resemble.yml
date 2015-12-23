@@ -14,3 +14,8 @@ endpoints:
     path_regex: /testagain
     verb_regex: POST
     host_regex: localhost
+- name: my_second_http_endpoint
+  matchers:
+  - name: my_second_endpoint_matcher
+    verb_regex: GET|POST|PUT
+    path_regex: /second_endpoint

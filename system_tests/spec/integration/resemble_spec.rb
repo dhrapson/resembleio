@@ -166,6 +166,15 @@ describe 'The resemble Server' do
 			response = client.post('/testagain')
 			expect(response.status).to be 200
 		end
+
+		it 'correctly matches on a second endpoint' do
+			response = client.post('/second_endpoint')
+			expect(response.status).to be 200
+			response = client.put('/second_endpoint')
+			expect(response.status).to be 200
+			response = client.get('/second_endpoint')
+			expect(response.status).to be 200
+		end
 	end
 
 	context 'when running a config with a non-existing host' do
